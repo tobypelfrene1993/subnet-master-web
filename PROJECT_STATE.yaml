@@ -1,0 +1,191 @@
+# PROJECT_STATE.yaml - Structured current truth
+
+metadata:
+  updated_at: 2026-06-08
+  updated_by: openai/gpt-5.5
+  version: "statedd-template-v3"
+
+workflow:
+  repo_mode: bootstrap
+  bootstrap:
+    completed: false
+    completed_on: null
+    system_investigated: true
+    repo_investigated: true
+    user_intake_complete: false
+    unknowns_remaining:
+      - browser visual acceptance not yet provided by human
+      - hosted deployment target not yet chosen
+      - PWA/offline scope not yet defined
+      - Python runtime unavailable for template scripts
+
+verification_labels:
+  observed: verified directly in the current session
+  unknown: not yet determined from currently available evidence
+  reported: supported by prior evidence, not re-verified
+  blocked: verification attempted but prevented
+  assumed: temporary working assumption
+  stale: previously verified but no longer fresh
+  invalid: known false or superseded
+
+current_state:
+  repository:
+    canonical_path: C:\Users\Admin\opencode\new\subnetweb
+    path_status: observed
+    branch: main
+    head: null
+    worktree_status: implementation changes pending commit
+
+  operating_mode:
+    status: observed
+    mode: bootstrap
+    summary: |
+      This repository starts in bootstrap mode. Do not switch to operating mode
+      until the project truth, backlog, active queue, runtime identity, and
+      evidence baseline have been established.
+
+  project:
+    name: subnetweb
+    type: frontend_only_learning_website
+    lifecycle_stage: bootstrap
+    truth_summary: functional_frontend_verified
+
+  runtime_identity:
+    status: observed
+    repo_path: C:\Users\Admin\opencode\new\subnetweb
+    branch: main
+    head: null
+    process_or_container: Vite development server launched through npm/cmd
+    port_or_base_url: http://127.0.0.1:5173
+    rebuilt_in_current_slice: true
+    duplicate_runtimes_checked: false
+    notes: |
+      The local dev server returned HTTP 200 and response content contained
+      `Subnet Master`. Production build also completed successfully.
+
+  environment:
+    status: observed
+    host:
+      os: Microsoft Windows NT 10.0.26200.0
+      kernel: Windows NT 10.0.26200.0
+      shell: Windows PowerShell 5.1.26100.8521
+      terminal: opencode shell tool
+    package_managers:
+      - winget v1.28.240 observed
+      - chocolatey not found
+    language_runtimes:
+      python: not found as python, python3, or py
+      node: v24.16.0 installed at C:\Program Files\nodejs\node.exe
+      npm: 11.13.0 installed at C:\Program Files\nodejs\npm.cmd
+    container_tooling:
+      docker: not found
+      podman: not inspected
+    browser_tooling:
+      chrome: not found via where.exe chrome
+      playwright: not inspected
+    ports:
+      listeners:
+        - 0.0.0.0:135
+        - 0.0.0.0:445
+        - 0.0.0.0:623
+        - 0.0.0.0:3389
+        - 0.0.0.0:5040
+        - 0.0.0.0:5357
+        - 0.0.0.0:16992
+        - 100.76.108.10:57347
+        - 127.0.0.1:6463
+      notes: |
+        Active TCP listeners were sampled with `netstat -ano -p tcp`; no
+        project-specific app listener was identified.
+
+  repository_structure:
+    status: observed
+    top_level_entries:
+      - .github
+      - .gitignore
+      - AGENTS.md
+      - BACKLOG.md
+      - LICENSE
+      - NEXT_ACTIONS.md
+      - package-lock.json
+      - package.json
+      - PROJECT_ADAPTER.yaml
+      - PROJECT_DNA.yaml
+      - PROJECT_STATE.yaml
+      - postcss.config.js
+      - public
+      - README.md
+      - src
+      - STATUS.md
+      - tailwind.config.js
+      - tsconfig.app.json
+      - tsconfig.json
+      - tsconfig.node.json
+      - vite.config.ts
+      - vitest.config.ts
+      - WORKLOG.md
+      - docs
+      - fixtures
+      - prompts
+      - scripts
+    manifests:
+      - README.md
+      - package.json
+      - package-lock.json
+      - vite.config.ts
+      - tailwind.config.js
+      - vitest.config.ts
+      - AGENTS.md
+      - PROJECT_STATE.yaml
+      - PROJECT_DNA.yaml
+      - PROJECT_ADAPTER.yaml
+    entrypoints:
+      - src/main.tsx
+      - src/App.tsx
+      - scripts/init_template.py
+      - scripts/check_state_docs.py
+      - scripts/test_init_template.py
+    test_setup:
+      - npm test
+      - src/tests/subnet.test.ts
+      - src/tests/vlsm.test.ts
+      - src/tests/quiz.test.ts
+      - scripts/check_state_docs.py
+      - scripts/test_init_template.py
+    deployment_assumptions:
+      - frontend can be statically hosted after `npm run build`
+      - future hosting target not yet chosen
+      - future PWA structure started with public/manifest.webmanifest
+    contradictions:
+      - requested URL `StateDD_Templat` returned 404; corrected URL `StateDD_Template` was public and cloned
+      - template scripts require Python, but Python is not currently available on PATH
+      - Node/npm work through direct install path in this session; new terminals should normally refresh PATH
+
+  evidence:
+    status: initialized
+    ledger: docs/EVIDENCE_LOG.md
+    acceptance_freezes: docs/ACCEPTANCE_FREEZES.md
+    artifact_root: docs/evidence
+    standard: browser_verification_or_test_output_for_user_facing_claims
+
+  documentation:
+    status: initialized
+    primary_user_guide: README.md
+    live_docs:
+      - README.md
+      - AGENTS.md
+      - STATUS.md
+      - PROJECT_STATE.yaml
+      - PROJECT_DNA.yaml
+      - PROJECT_ADAPTER.yaml
+      - NEXT_ACTIONS.md
+      - BACKLOG.md
+      - WORKLOG.md
+      - docs/EVIDENCE_LOG.md
+      - docs/ACCEPTANCE_FREEZES.md
+
+active_problems:
+  - id: AP-001
+    status: observed
+    summary: Python runtime unavailable, blocking template initializer and validation scripts.
+    linked_backlog: BL-010

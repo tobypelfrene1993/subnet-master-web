@@ -1,0 +1,15 @@
+export const termDefinitions: Record<string, string> = {
+  'IP address': 'A 32-bit IPv4 identifier written as four decimal octets, such as 192.168.1.10.',
+  CIDR: 'Classless Inter-Domain Routing notation. The /number says how many bits are fixed as the network prefix.',
+  'Subnet mask': 'A dotted-decimal mask that marks network bits with 1s and host bits with 0s.',
+  'Wildcard mask': 'The inverse of the subnet mask. It is commonly used in ACLs and routing rules.',
+  'Network address': 'The first address in a subnet. It identifies the subnet itself.',
+  'Broadcast address': 'The last address in a subnet. It reaches all hosts in that subnet.',
+  'First usable host': 'The first normally assignable host address after the network address.',
+  'Last usable host': 'The last normally assignable host address before the broadcast address.',
+  'Usable hosts': 'The number of assignable host addresses in the subnet.',
+  VLSM: 'Variable Length Subnet Masking. It lets each subnet use the smallest mask that fits its host requirement.',
+  'Block size': 'The address increment in the changing octet. For /26, the block size is 64.',
+  'Practice mode': 'Untimed random subnetting questions with instant feedback.',
+  'Exam mode': 'A timed quiz that tracks score and reviews missed questions at the end.',
+};

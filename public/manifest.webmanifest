@@ -1,0 +1,10 @@
+{
+  "name": "Subnet Master",
+  "short_name": "SubnetMaster",
+  "description": "Subnetting calculator, VLSM calculator and practice tool for networking students.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#07111f",
+  "theme_color": "#07111f",
+  "icons": []
+}
