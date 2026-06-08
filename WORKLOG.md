@@ -19,3 +19,11 @@ Use this file for dated session notes, verification summaries, and references to
 - Implemented browser-safe subnet, VLSM, and quiz logic in `src/lib/subnet.ts`, `src/lib/vlsm.ts`, and `src/lib/quiz.ts`.
 - Added Vitest coverage for IPv4 parsing, masks, subnet calculations, CIDR recommendations, VLSM allocation/no-overlap behavior, base-network-too-small errors, and quiz answer checking.
 - Installed Node.js LTS with winget, installed npm dependencies, ran tests, ran production build, and verified the local dev site returned HTTP 200 at `http://127.0.0.1:5173`.
+
+## 2026-06-08 - Ngrok self-hosting preparation
+
+- Updated Vite scripts so `npm run dev -- --host 0.0.0.0` can expose the dev server for ngrok/local-network testing without fighting a hardcoded host flag.
+- Added `server.allowedHosts: ['.ngrok-free.app']` in `vite.config.ts` for ngrok free-app forwarding URLs.
+- Added README instructions for Windows ngrok sharing, optional local-network testing, and troubleshooting.
+- Verified no app/config source files contain hardcoded `localhost` or `127.0.0.1` URLs.
+- Verified `npm install`, plain `npm run dev`, ngrok-ready `npm run dev -- --host 0.0.0.0`, `npm test`, and `npm run build`.

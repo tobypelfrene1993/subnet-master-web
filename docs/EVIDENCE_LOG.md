@@ -72,3 +72,27 @@
   as_of: 2026-06-08
   Notes: The running local process is a Vite development server on port 5173.
 ```
+
+## EV-2026-06-08-003: Ngrok-ready local hosting verification
+
+```yaml
+- ID: EV-2026-06-08-003
+  File: inline session/tool output
+  Title: Subnet Master prepared for ngrok sharing from Windows
+  Source/System: npm, Vite, grep, HTTP request
+  Route/Page: http://localhost:5173 and http://127.0.0.1:5173
+  Action: updated Vite host handling, added ngrok README instructions, started local and host-exposed dev servers, ran tests and build
+  Shows:
+    - `npm install` completed with 0 vulnerabilities
+    - plain `npm run dev` served `Subnet Master` with HTTP 200
+    - `npm run dev -- --host 0.0.0.0` served `Subnet Master` with HTTP 200 and printed network URLs
+    - source/config search found no hardcoded `localhost` or `127.0.0.1` URLs in app source/config files
+    - `npm test` passed 13 tests across 3 files
+    - `npm run build` completed successfully
+  Proves:
+    - the app can run locally and in Vite host-exposed mode for ngrok forwarding
+    - the current frontend does not depend on local-only source URLs
+  Type: integration
+  as_of: 2026-06-08
+  Notes: ngrok itself was documented but not started; use `ngrok http 5173` after starting Vite with `--host 0.0.0.0`.
+```

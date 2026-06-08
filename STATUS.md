@@ -11,11 +11,11 @@
 - The app includes IP Calculator, VLSM Calculator, CIDR Wizard, Practice Mode, Exam Mode, Cheat Sheet, and Visual Network View.
 - Core subnet, VLSM, and quiz logic lives under `src/lib/` and is covered by Vitest tests.
 - `npm test` passed: 13 tests across 3 files.
-- `npm run build` passed and the local dev server returned HTTP 200 at `http://127.0.0.1:5173`.
+- `npm run build` passed; plain local dev and `--host 0.0.0.0` dev mode both returned HTTP 200.
 
 ## Immediate Priorities
 
-1. Visually review the running website in a browser at `http://127.0.0.1:5173`.
+1. For class sharing, run `npm run dev -- --host 0.0.0.0`, then `ngrok http 5173` in a second PowerShell window.
 2. Fix any UI/content issues found during browser review.
 3. Decide whether to move the repo from bootstrap to operating mode after acceptance.
 

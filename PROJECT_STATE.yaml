@@ -15,7 +15,7 @@ workflow:
     user_intake_complete: false
     unknowns_remaining:
       - browser visual acceptance not yet provided by human
-      - hosted deployment target not yet chosen
+      - permanent hosted deployment target not yet chosen
       - PWA/offline scope not yet defined
       - Python runtime unavailable for template scripts
 
@@ -61,7 +61,8 @@ current_state:
     duplicate_runtimes_checked: false
     notes: |
       The local dev server returned HTTP 200 and response content contained
-      `Subnet Master`. Production build also completed successfully.
+      `Subnet Master`. Plain dev mode and host-exposed dev mode for ngrok both
+      verified successfully. Production build also completed successfully.
 
   environment:
     status: observed
@@ -155,11 +156,13 @@ current_state:
     deployment_assumptions:
       - frontend can be statically hosted after `npm run build`
       - future hosting target not yet chosen
+      - temporary ngrok sharing supported through `npm run dev -- --host 0.0.0.0` and `ngrok http 5173`
       - future PWA structure started with public/manifest.webmanifest
     contradictions:
       - requested URL `StateDD_Templat` returned 404; corrected URL `StateDD_Template` was public and cloned
       - template scripts require Python, but Python is not currently available on PATH
       - Node/npm work through direct install path in this session; new terminals should normally refresh PATH
+      - PowerShell execution policy can block npm.ps1; npm.cmd worked for verification
 
   evidence:
     status: initialized

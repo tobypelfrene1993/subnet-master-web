@@ -46,6 +46,57 @@ Open the local URL shown by Vite, normally:
 http://127.0.0.1:5173
 ```
 
+If Vite prints `http://localhost:5173`, that is also correct for local browser testing on the laptop.
+
+## Share With Classmates Through Ngrok
+
+Use this when you want to run Subnet Master on your Windows laptop and share a public temporary link with classmates.
+
+Start the Vite dev server and allow external connections:
+
+```bash
+npm run dev -- --host 0.0.0.0
+```
+
+Open a second PowerShell window. Keep the first PowerShell window open.
+
+Start ngrok:
+
+```bash
+ngrok http 5173
+```
+
+Copy the public forwarding URL from ngrok, for example:
+
+```text
+https://random-name.ngrok-free.app
+```
+
+Share that ngrok URL with classmates.
+
+Keep both PowerShell windows open while classmates are using the site.
+
+## Optional Local Network Testing
+
+To test from another device on the same Wi-Fi or LAN, start Vite with:
+
+```bash
+npm run dev -- --host 0.0.0.0
+```
+
+Then open the network URL shown by Vite from the other device, if Windows Firewall and your network allow it.
+
+## Ngrok Troubleshooting
+
+- If `npm` is not recognized, open a new PowerShell window so the Node.js PATH refreshes.
+- If PowerShell blocks `npm.ps1`, run the same command with `npm.cmd`, for example `npm.cmd run dev -- --host 0.0.0.0`, or use Command Prompt.
+- If `ngrok` is not recognized, install ngrok or add it to PATH.
+- If classmates cannot open the link, verify the Vite server and ngrok are both running.
+- Keep the laptop turned on while sharing.
+- Do not close the PowerShell windows running Vite or ngrok.
+- Free ngrok URLs can change every time ngrok restarts.
+- If ngrok shows a public URL but the page does not load, restart Vite with `npm run dev -- --host 0.0.0.0` and restart `ngrok http 5173`.
+
 ## Production Build
 
 ```bash
@@ -98,6 +149,7 @@ Subnet Master is ready to become a hosted static website later. Good options inc
 - Netlify
 - Cloudflare Pages
 - Static files served from a VPS or web server
+- Temporary self-hosted sharing through ngrok during classes or demos
 
 The production output is generated into `dist/` by `npm run build`.
 

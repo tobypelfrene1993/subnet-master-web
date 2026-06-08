@@ -23,6 +23,8 @@ runtime:
 commands:
   install: npm install
   dev: npm run dev
+  dev_ngrok: npm run dev -- --host 0.0.0.0
+  ngrok: ngrok http 5173
   build: npm run build
   preview: npm run preview
   test: npm test
