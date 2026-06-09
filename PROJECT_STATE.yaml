@@ -15,6 +15,7 @@ workflow:
     user_intake_complete: false
     unknowns_remaining:
       - browser visual acceptance not yet provided by human
+      - screenshot evidence for latest visual polish not captured in this tool environment
       - permanent hosted deployment target not yet chosen
       - PWA/offline scope not yet defined
       - Python runtime unavailable for template scripts
@@ -48,7 +49,7 @@ current_state:
     name: subnetweb
     type: frontend_only_learning_website
     lifecycle_stage: bootstrap
-    truth_summary: functional_frontend_verified
+    truth_summary: functional_frontend_with_formula_explanations_verified_by_tests_build_http
 
   runtime_identity:
     status: observed
@@ -58,11 +59,13 @@ current_state:
     process_or_container: Vite development server launched through npm/cmd
     port_or_base_url: http://127.0.0.1:5173
     rebuilt_in_current_slice: true
-    duplicate_runtimes_checked: false
+    duplicate_runtimes_checked: true
     notes: |
-      The local dev server returned HTTP 200 and response content contained
-      `Subnet Master`. Plain dev mode and host-exposed dev mode for ngrok both
-      verified successfully. Production build also completed successfully.
+      The latest local dev server returned HTTP 200 and response content
+      contained `Subnet Master` after the visual polish and formula-explanation
+      slice. The verification runtime was stopped after the check. Production
+      build also completed successfully. Browser screenshot acceptance remains
+      unknown because no browser/screenshot tool is available in this session.
 
   environment:
     status: observed

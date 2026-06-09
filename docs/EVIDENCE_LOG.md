@@ -96,3 +96,26 @@
   as_of: 2026-06-08
   Notes: ngrok itself was documented but not started; use `ngrok http 5173` after starting Vite with `--host 0.0.0.0`.
 ```
+
+## EV-2026-06-08-004: Visual polish and formula explanation verification
+
+```yaml
+- ID: EV-2026-06-08-004
+  File: inline session/tool output
+  Title: Subnet Master polished UI and formula explanations verified by tests, build, and HTTP runtime
+  Source/System: npm, TypeScript/Vite, HTTP request
+  Route/Page: http://127.0.0.1:5173
+  Action: updated React/Tailwind UI, added IP Calculator formula cards and VLSM formula explanations, ran tests/build, started Vite dev server, requested local URL, stopped runtime
+  Shows:
+    - `npm test` passed 13 tests across 3 files
+    - `npm run build` completed successfully
+    - local Vite dev server returned `HTTP 200 OK`
+    - response content contained `Subnet Master`
+    - port 5173 was stopped after verification
+  Proves:
+    - the updated frontend compiles and passes the existing subnet/VLSM/quiz tests
+    - the local runtime served the Subnet Master app from this repo after the UI/formula slice
+  Type: docs-render-verification
+  as_of: 2026-06-08
+  Notes: Browser screenshot acceptance is not captured because no browser/screenshot tool is available in this session.
+```

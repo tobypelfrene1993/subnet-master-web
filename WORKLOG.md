@@ -27,3 +27,12 @@ Use this file for dated session notes, verification summaries, and references to
 - Added README instructions for Windows ngrok sharing, optional local-network testing, and troubleshooting.
 - Verified no app/config source files contain hardcoded `localhost` or `127.0.0.1` URLs.
 - Verified `npm install`, plain `npm run dev`, ngrok-ready `npm run dev -- --host 0.0.0.0`, `npm test`, and `npm run build`.
+
+## 2026-06-08 - Visual polish and formula explanations
+
+- Improved the existing dark network-lab UI with a more polished header, dashboard hero, cards, panels, form styling, table hover states, and background grid accents.
+- Added formula breakdown cards to the IP Calculator showing total addresses, usable hosts, subnet mask, wildcard mask, network address, broadcast address, host range, and block size.
+- Added per-row VLSM formula explanations showing required hosts, needed addresses, next power-of-two block, host bits, and selected CIDR.
+- Left the core subnet/VLSM calculation logic unchanged.
+- Verified `npm test`, `npm run build`, and local Vite HTTP 200 runtime identity at `http://127.0.0.1:5173`; stopped the verification runtime afterward.
+- Browser screenshot acceptance remains open because no browser/screenshot tool is available in this session.

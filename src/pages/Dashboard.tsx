@@ -19,20 +19,32 @@ type DashboardProps = {
 export function Dashboard({ onNavigate }: DashboardProps) {
   return (
     <div className="space-y-8">
-      <section className="overflow-hidden rounded-[2rem] border border-line bg-slate-950/60 p-6 shadow-glow md:p-10">
-        <div className="grid gap-8 lg:grid-cols-[1.25fr_0.75fr] lg:items-center">
+      <section className="relative overflow-hidden rounded-[2rem] border border-cyan/20 bg-slate-950/65 p-6 shadow-glow md:p-10">
+        <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-cyan/15 blur-3xl" />
+        <div className="absolute bottom-0 left-0 h-px w-full bg-gradient-to-r from-cyan/70 via-blue-500/30 to-transparent" />
+        <div className="relative grid gap-8 lg:grid-cols-[1.25fr_0.75fr] lg:items-center">
           <div>
-            <p className="mb-4 text-sm font-semibold uppercase tracking-[0.35em] text-cyan">IPv4 subnetting command center</p>
-            <h2 className="max-w-4xl text-5xl font-black leading-tight tracking-tight text-white md:text-7xl">Subnet Master</h2>
+            <p className="mb-4 inline-flex rounded-full border border-cyan/30 bg-cyan/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] text-cyan">IPv4 subnetting command center</p>
+            <h2 className="max-w-4xl text-5xl font-black leading-tight tracking-tight text-white md:text-7xl">
+              Leer subnetten met heldere berekeningen.
+            </h2>
             <p className="mt-5 max-w-3xl text-lg leading-8 text-slate-300 md:text-xl">
-              Free subnetting calculator, VLSM calculator and practice tool for networking students.
+              Free subnetting calculator, VLSM planner en oefenmodus voor studenten die niet alleen antwoorden willen, maar ook de formule erachter.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <button className="primary-button" type="button" onClick={() => onNavigate('ip')}>Start calculating</button>
               <button className="secondary-button" type="button" onClick={() => onNavigate('practice')}>Practice questions</button>
             </div>
+            <div className="mt-7 grid max-w-2xl gap-3 sm:grid-cols-3">
+              {['Network', 'Broadcast', 'Host range'].map((item) => (
+                <div key={item} className="rounded-2xl border border-line/70 bg-slate-900/55 px-4 py-3">
+                  <p className="font-mono text-sm font-semibold text-cyan">{item}</p>
+                  <p className="mt-1 text-xs text-slate-400">met stappenplan</p>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="rounded-3xl border border-cyan/30 bg-gradient-to-br from-cyan/15 to-blue-950/80 p-5">
+          <div className="rounded-3xl border border-cyan/30 bg-gradient-to-br from-cyan/15 via-slate-900/80 to-blue-950/80 p-5 shadow-2xl">
             <p className="text-sm font-semibold text-cyan">Quick lab snapshot</p>
             <dl className="mt-5 space-y-4">
               <div className="flex items-center justify-between gap-4 border-b border-line pb-3">
@@ -59,9 +71,10 @@ export function Dashboard({ onNavigate }: DashboardProps) {
               key={card.key}
               type="button"
               onClick={() => onNavigate(card.key)}
-              className={`group rounded-3xl border border-line bg-gradient-to-br ${card.accent} p-5 text-left transition hover:-translate-y-1 hover:border-cyan/70 hover:shadow-glow`}
+              className={`group relative overflow-hidden rounded-3xl border border-line bg-gradient-to-br ${card.accent} p-5 text-left transition hover:-translate-y-1 hover:border-cyan/70 hover:shadow-glow`}
             >
-              <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl border border-cyan/30 bg-slate-950/70 font-mono text-cyan">
+              <div className="absolute inset-x-5 top-0 h-px bg-gradient-to-r from-transparent via-cyan/50 to-transparent opacity-0 transition group-hover:opacity-100" />
+              <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl border border-cyan/30 bg-slate-950/70 font-mono text-cyan shadow-lg">
                 /{cards.indexOf(card) + 1}
               </div>
               <h3 className="text-xl font-bold text-white">

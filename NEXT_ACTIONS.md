@@ -9,7 +9,7 @@
 ### P1 [BL-006] Browser-review Subnet Master locally
 
 Owner: human + coding agent
-Next: open `http://127.0.0.1:5173` and visually test the dashboard, calculators, quiz modes, cheat sheet, and visual network view.
+Next: open `http://127.0.0.1:5173` and visually test the polished dashboard, IP/VLSM formula explanations, calculators, quiz modes, cheat sheet, and visual network view.
 Exit: acceptance or specific UI/behavior issues are recorded with evidence.
 
 ### P2 [BL-008] Decide bootstrap-to-operating transition

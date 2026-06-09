@@ -13,10 +13,29 @@ body {
   min-width: 320px;
   min-height: 100vh;
   background:
-    radial-gradient(circle at top left, rgba(39, 217, 255, 0.18), transparent 28rem),
-    radial-gradient(circle at 80% 20%, rgba(37, 99, 235, 0.18), transparent 30rem),
-    linear-gradient(135deg, #07111f 0%, #091624 48%, #0b1020 100%);
+    radial-gradient(circle at 12% 8%, rgba(39, 217, 255, 0.22), transparent 28rem),
+    radial-gradient(circle at 82% 18%, rgba(37, 99, 235, 0.22), transparent 30rem),
+    radial-gradient(circle at 52% 95%, rgba(16, 185, 129, 0.1), transparent 26rem),
+    linear-gradient(135deg, #06101f 0%, #091624 46%, #070b18 100%);
   color: #e2e8f0;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(39, 217, 255, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(39, 217, 255, 0.055) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 82%);
+}
+
+::selection {
+  background: rgba(39, 217, 255, 0.28);
+  color: #ffffff;
 }
 
 button,
@@ -30,11 +49,11 @@ select {
   width: 100%;
   border-radius: 1rem;
   border: 1px solid rgba(30, 54, 84, 0.95);
-  background: rgba(2, 6, 23, 0.74);
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.9), rgba(2, 6, 23, 0.78));
   padding: 0.8rem 1rem;
   color: #f8fafc;
   outline: none;
-  transition: border-color 150ms ease, box-shadow 150ms ease;
+  transition: border-color 150ms ease, box-shadow 150ms ease, background 150ms ease;
 }
 
 input:focus,
@@ -68,6 +87,14 @@ td {
   color: #dbeafe;
 }
 
+tbody tr {
+  transition: background 150ms ease;
+}
+
+tbody tr:hover {
+  background: rgba(39, 217, 255, 0.04);
+}
+
 .primary-button {
   border-radius: 9999px;
   background: linear-gradient(135deg, #27d9ff, #2563eb);
@@ -89,6 +116,13 @@ td {
   color: #a5f3fc;
   font-weight: 700;
   padding: 0.78rem 1.1rem;
+  transition: border-color 150ms ease, background 150ms ease, transform 150ms ease;
+}
+
+.secondary-button:hover {
+  border-color: rgba(39, 217, 255, 0.7);
+  background: rgba(39, 217, 255, 0.14);
+  transform: translateY(-1px);
 }
 
 .danger-button {

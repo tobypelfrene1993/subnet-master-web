@@ -50,27 +50,30 @@ export default function App() {
   return (
     <div className="min-h-screen px-4 py-6 md:px-8 lg:px-10">
       <header className="mx-auto mb-8 max-w-7xl">
-        <div className="flex flex-col gap-5 rounded-3xl border border-line/70 bg-slate-950/45 p-5 shadow-glow backdrop-blur lg:flex-row lg:items-center lg:justify-between">
-          <button type="button" onClick={() => setActivePage('dashboard')} className="text-left">
-            <p className="text-xs font-semibold uppercase tracking-[0.4em] text-cyan">Network lab</p>
-            <h1 className="mt-1 text-3xl font-black tracking-tight text-white md:text-4xl">Subnet Master</h1>
-          </button>
-          <nav className="flex gap-2 overflow-x-auto pb-1">
-            {pages.map((page) => (
-              <button
-                key={page.key}
-                type="button"
-                onClick={() => setActivePage(page.key)}
-                className={`whitespace-nowrap rounded-full px-4 py-2 text-sm font-semibold transition ${
-                  activePage === page.key
-                    ? 'bg-cyan text-slate-950 shadow-glow'
-                    : 'border border-line bg-slate-900/70 text-slate-300 hover:border-cyan/70 hover:text-white'
-                }`}
-              >
-                {page.label}
-              </button>
-            ))}
-          </nav>
+        <div className="relative overflow-hidden rounded-3xl border border-cyan/20 bg-slate-950/55 p-5 shadow-glow backdrop-blur-xl">
+          <div className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-cyan/70 to-transparent" />
+          <div className="relative flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+            <button type="button" onClick={() => setActivePage('dashboard')} className="text-left">
+              <p className="text-xs font-semibold uppercase tracking-[0.4em] text-cyan">Network lab</p>
+              <h1 className="mt-1 text-3xl font-black tracking-tight text-white md:text-4xl">Subnet Master</h1>
+            </button>
+            <nav className="flex gap-2 overflow-x-auto pb-1">
+              {pages.map((page) => (
+                <button
+                  key={page.key}
+                  type="button"
+                  onClick={() => setActivePage(page.key)}
+                  className={`whitespace-nowrap rounded-full px-4 py-2 text-sm font-semibold transition ${
+                    activePage === page.key
+                      ? 'bg-cyan text-slate-950 shadow-glow'
+                      : 'border border-line bg-slate-900/70 text-slate-300 hover:border-cyan/70 hover:text-white'
+                  }`}
+                >
+                  {page.label}
+                </button>
+              ))}
+            </nav>
+          </div>
         </div>
       </header>
       <main className="mx-auto max-w-7xl">{renderPage()}</main>

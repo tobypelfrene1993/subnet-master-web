@@ -12,6 +12,12 @@ const initialRows: VlsmInput[] = [
   { id: 'wan', name: 'WAN Link', hosts: 2 },
 ];
 
+function getVlsmFormula(result: VlsmAllocation): string {
+  const neededAddresses = result.requiredHosts === 1 ? 1 : result.requiredHosts + 2;
+  const hostBits = 32 - result.cidr;
+  return `${result.requiredHosts} hosts -> ${neededAddresses} benodigde adressen -> volgende macht van 2 is ${result.totalAddresses} -> 32 - ${hostBits} hostbits = /${result.cidr}`;
+}
+
 type VlsmCalculatorProps = {
   onResults: (results: VlsmAllocation[]) => void;
   onOpenVisual: () => void;
@@ -52,6 +58,9 @@ export function VlsmCalculator({ onResults, onOpenVisual }: VlsmCalculatorProps)
   return (
     <div className="space-y-6">
       <Panel title="VLSM Calculator" eyebrow="Variable length planning">
+        <div className="mb-5 rounded-2xl border border-cyan/20 bg-cyan/10 p-4 text-sm leading-6 text-slate-300">
+          VLSM kiest per rij de kleinste subnetgrootte die past. In optimized mode worden de grootste host requirements eerst geplaatst om overlap te voorkomen.
+        </div>
         <div className="grid gap-4 lg:grid-cols-[1fr_0.6fr_0.6fr]">
           <div>
             <FieldLabel term="VLSM">Base network</FieldLabel>
@@ -114,6 +123,7 @@ export function VlsmCalculator({ onResults, onOpenVisual }: VlsmCalculatorProps)
                 <th>Last host</th>
                 <th>Broadcast</th>
                 <th>Usable hosts</th>
+                <th>Formula</th>
               </tr>
             </thead>
             <tbody>
@@ -128,9 +138,10 @@ export function VlsmCalculator({ onResults, onOpenVisual }: VlsmCalculatorProps)
                   <td className="font-mono">{result.lastHost}</td>
                   <td className="font-mono">{result.broadcast}</td>
                   <td>{result.usableHosts}</td>
+                  <td className="min-w-72 text-sm leading-6 text-slate-300">{getVlsmFormula(result)}</td>
                 </tr>
               ))}
-              {results.length === 0 ? <tr><td colSpan={9} className="text-slate-400">Run a calculation to populate the table.</td></tr> : null}
+              {results.length === 0 ? <tr><td colSpan={10} className="text-slate-400">Run a calculation to populate the table.</td></tr> : null}
             </tbody>
           </table>
         </div>

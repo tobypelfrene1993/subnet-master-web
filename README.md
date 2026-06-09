@@ -7,15 +7,15 @@ It runs completely in the browser. There is no backend, no database, and no logi
 ## Features
 
 - Dashboard with quick access to every subnetting tool.
-- IPv4 calculator for network address, broadcast address, host range, subnet mask, wildcard mask, totals, usable hosts, and block size.
-- VLSM calculator with original order, optimized largest-first allocation, and random display order.
+- IPv4 calculator for network address, broadcast address, host range, subnet mask, wildcard mask, totals, usable hosts, block size, and step-by-step formula breakdown.
+- VLSM calculator with original order, optimized largest-first allocation, random display order, and per-subnet CIDR formula explanation.
 - CIDR Wizard that recommends the smallest fitting CIDR for a required host count.
 - Practice Mode with random subnetting questions and instant feedback.
 - Exam Mode with timed quizzes, scoring, final results, and wrong-answer review.
 - CIDR cheat sheet from `/16` through `/32`.
 - Visual Network View for VLSM blocks and standalone subnet visualization.
 - Help tooltips for important subnetting terms.
-- Dark professional Cisco/network-engineering style UI.
+- Polished dark professional Cisco/network-engineering style UI.
 - Responsive layout for laptops first, with tablet and mobile support.
 
 ## Tech Stack
@@ -47,6 +47,14 @@ http://127.0.0.1:5173
 ```
 
 If Vite prints `http://localhost:5173`, that is also correct for local browser testing on the laptop.
+
+## Update GitHub After Changes
+
+To update GitHub after changes, double-click:
+
+```text
+push-to-github.bat
+```
 
 ## Share With Classmates Through Ngrok
 
