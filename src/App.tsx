@@ -7,13 +7,15 @@ import { PracticeMode } from './pages/PracticeMode';
 import { ExamMode } from './pages/ExamMode';
 import { CheatSheet } from './pages/CheatSheet';
 import { VisualNetworkView } from './pages/VisualNetworkView';
+import { BinaryCalculator } from './pages/BinaryCalculator';
 import type { VlsmAllocation } from './types/subnet';
 
-export type PageKey = 'dashboard' | 'ip' | 'vlsm' | 'wizard' | 'practice' | 'exam' | 'cheat' | 'visual';
+export type PageKey = 'dashboard' | 'ip' | 'binary' | 'vlsm' | 'wizard' | 'practice' | 'exam' | 'cheat' | 'visual';
 
 const pages: Array<{ key: PageKey; label: string }> = [
   { key: 'dashboard', label: 'Dashboard' },
   { key: 'ip', label: 'IP Calculator' },
+  { key: 'binary', label: 'Binary Calculator' },
   { key: 'vlsm', label: 'VLSM' },
   { key: 'wizard', label: 'CIDR Wizard' },
   { key: 'practice', label: 'Practice' },
@@ -32,6 +34,8 @@ export default function App() {
         return <Dashboard onNavigate={setActivePage} />;
       case 'ip':
         return <IpCalculator />;
+      case 'binary':
+        return <BinaryCalculator />;
       case 'vlsm':
         return <VlsmCalculator onResults={setVlsmResults} onOpenVisual={() => setActivePage('visual')} />;
       case 'wizard':

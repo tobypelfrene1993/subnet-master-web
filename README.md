@@ -20,6 +20,7 @@ When hosted, paste the Netlify link here.
 
 - Dashboard with quick access to every subnetting tool.
 - IPv4 calculator for network address, broadcast address, host range, subnet mask, wildcard mask, totals, usable hosts, block size, and step-by-step formula breakdown.
+- Binary Calculator with a teacher-style Binary Board explanation for IPv4/CIDR subnetting, including binary IP, binary mask, network/host bit highlighting, AND math, network ID, broadcast, and host range.
 - VLSM calculator with original order, optimized largest-first allocation, random display order, and per-subnet CIDR formula explanation.
 - CIDR Wizard that recommends the smallest fitting CIDR for a required host count.
 - Practice Mode with random subnetting questions and instant feedback.
@@ -141,7 +142,7 @@ http://127.0.0.1:4173
 npm test
 ```
 
-Tests cover IPv4 parsing, CIDR masks, wildcard masks, network/broadcast calculations, first and last hosts, usable host counts, CIDR recommendations, VLSM allocation/no-overlap behavior, base-network-too-small errors, and quiz answer checking.
+Tests cover IPv4 parsing, CIDR masks, wildcard masks, binary subnet explanations, network/broadcast calculations, first and last hosts, usable host counts, CIDR recommendations, VLSM allocation/no-overlap behavior, base-network-too-small errors, and quiz answer checking.
 
 ## Project Structure
 

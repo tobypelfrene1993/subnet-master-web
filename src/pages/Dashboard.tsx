@@ -4,6 +4,7 @@ import { InfoTooltip } from '../components/InfoTooltip';
 
 const cards: Array<{ key: PageKey; title: string; description: string; accent: string }> = [
   { key: 'ip', title: 'IP Calculator', description: 'Network, broadcast, host range, masks and block size from any IPv4/CIDR.', accent: 'from-cyan/30 to-blue-700/20' },
+  { key: 'binary', title: 'Binary Calculator', description: 'Convert IPv4 and CIDR masks into binary, then visualize the AND operation.', accent: 'from-cyan/25 to-emerald-500/15' },
   { key: 'vlsm', title: 'VLSM Calculator', description: 'Allocate non-overlapping subnet blocks from real host requirements.', accent: 'from-emerald-400/25 to-cyan/15' },
   { key: 'wizard', title: 'CIDR Wizard', description: 'Enter required hosts and learn the smallest matching CIDR block.', accent: 'from-violet-400/25 to-blue-700/15' },
   { key: 'practice', title: 'Practice Mode', description: 'Instant-feedback questions for network, broadcast, host range and masks.', accent: 'from-amber-300/25 to-cyan/10' },
@@ -80,6 +81,7 @@ export function Dashboard({ onNavigate }: DashboardProps) {
               <h3 className="text-xl font-bold text-white">
                 {card.title}
                 {card.key === 'vlsm' ? <InfoTooltip term="VLSM" /> : null}
+                {card.key === 'binary' ? <InfoTooltip term="Binary" /> : null}
                 {card.key === 'practice' ? <InfoTooltip term="Practice mode" /> : null}
                 {card.key === 'exam' ? <InfoTooltip term="Exam mode" /> : null}
               </h3>
