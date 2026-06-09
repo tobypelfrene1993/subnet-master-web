@@ -1,7 +1,7 @@
 # PROJECT_STATE.yaml - Structured current truth
 
 metadata:
-  updated_at: 2026-06-08
+  updated_at: 2026-06-09
   updated_by: openai/gpt-5.5
   version: "statedd-template-v3"
 
@@ -35,7 +35,9 @@ current_state:
     path_status: observed
     branch: main
     head: null
-    worktree_status: implementation changes pending commit
+    remote_origin: https://github.com/tobypelfrene1993/subnet-master-web.git
+    remote_origin_status: observed
+    worktree_status: clean after verified GitHub push
 
   operating_mode:
     status: observed
@@ -113,6 +115,7 @@ current_state:
       - NEXT_ACTIONS.md
       - package-lock.json
       - package.json
+      - push-to-github.bat
       - PROJECT_ADAPTER.yaml
       - PROJECT_DNA.yaml
       - PROJECT_STATE.yaml

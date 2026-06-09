@@ -36,3 +36,11 @@ Use this file for dated session notes, verification summaries, and references to
 - Left the core subnet/VLSM calculation logic unchanged.
 - Verified `npm test`, `npm run build`, and local Vite HTTP 200 runtime identity at `http://127.0.0.1:5173`; stopped the verification runtime afterward.
 - Browser screenshot acceptance remains open because no browser/screenshot tool is available in this session.
+
+## 2026-06-09 - GitHub sync script and remote configured
+
+- Configured `origin` as `https://github.com/tobypelfrene1993/subnet-master-web.git`.
+- Added `push-to-github.bat` for Windows double-click updates to GitHub.
+- Added README instructions telling users to double-click `push-to-github.bat` after changes.
+- Pushed local `main` to GitHub without configuring Netlify deployment automation.
+- Verified the script path by using `push-to-github.bat` to commit and push this state/history update.

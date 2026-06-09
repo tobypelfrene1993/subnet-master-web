@@ -1,6 +1,6 @@
 # subnetweb Status
 
-**Updated At:** 2026-06-08
+**Updated At:** 2026-06-09
 **Execution Mode:** bootstrap
 **Project State:** functional_frontend_verified
 **Public URL:** local only: http://127.0.0.1:5173
@@ -13,12 +13,13 @@
 - Core subnet, VLSM, and quiz logic lives under `src/lib/` and is covered by Vitest tests.
 - `npm test` passed: 13 tests across 3 files.
 - `npm run build` passed; latest local dev runtime returned HTTP 200 with `Subnet Master` content at `http://127.0.0.1:5173`.
+- GitHub remote `origin` is configured for `https://github.com/tobypelfrene1993/subnet-master-web.git`; use `push-to-github.bat` for manual Windows updates.
 
 ## Immediate Priorities
 
-1. For class sharing, run `npm run dev -- --host 0.0.0.0`, then `ngrok http 5173` in a second PowerShell window.
-2. Browser-review the polished UI and formula explanations; capture screenshot/evidence if accepted.
-3. Decide whether to move the repo from bootstrap to operating mode after acceptance.
+1. To update GitHub after local changes, double-click `push-to-github.bat`.
+2. For class sharing, run `npm run dev -- --host 0.0.0.0`, then `ngrok http 5173` in a second PowerShell window.
+3. Browser-review the polished UI and formula explanations; capture screenshot/evidence if accepted.
 
 ## Active Blockers
 

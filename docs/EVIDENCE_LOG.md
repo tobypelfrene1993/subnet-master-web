@@ -119,3 +119,26 @@
   as_of: 2026-06-08
   Notes: Browser screenshot acceptance is not captured because no browser/screenshot tool is available in this session.
 ```
+
+## EV-2026-06-09-001: GitHub remote and push script verification
+
+```yaml
+- ID: EV-2026-06-09-001
+  File: inline session/tool output
+  Title: GitHub origin remote and Windows push script verified
+  Source/System: git, cmd, batch script
+  Action: configured origin, pushed main, ran push-to-github.bat with empty commit-message input, compared remote main with local HEAD, checked clean worktree
+  Shows:
+    - `git remote -v` lists `https://github.com/tobypelfrene1993/subnet-master-web.git` for fetch and push
+    - `git push -u origin main` created and tracked remote branch `main`
+    - `push-to-github.bat` can add, default the commit message, commit, push, print success, and pause
+    - remote `refs/heads/main` matched the local `HEAD` after push verification
+    - final `git status --short --branch` reported a clean working tree
+  Proves:
+    - the local project is connected to the requested GitHub repository
+    - the complete pushed Git history is available on GitHub at `origin/main`
+    - Netlify deployment automation was not configured in this slice
+  Type: integration
+  as_of: 2026-06-09
+  Notes: Git author identity was supplied by the batch script when no Git config identity existed; Git config was not modified.
+```
