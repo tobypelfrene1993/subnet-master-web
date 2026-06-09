@@ -154,7 +154,6 @@ Core calculation logic is separated from the UI:
 Subnet Master is ready to become a hosted static website later. Good options include:
 
 - Vercel
-- Netlify
 - Cloudflare Pages
 - Static files served from a VPS or web server
 - Temporary self-hosted sharing through ngrok during classes or demos
