@@ -41,3 +41,19 @@ venv/
 *.tmp
 *.temp
 .cache/
+
+# Local StateDD/project-management scaffold, not part of the website source
+.github/
+AGENTS.md
+BACKLOG.md
+NEXT_ACTIONS.md
+PROJECT_ADAPTER.yaml
+PROJECT_DNA.yaml
+PROJECT_STATE.yaml
+STATUS.md
+WORKLOG.md
+docs/
+fixtures/
+prompts/
+scripts/
+LICENSE
