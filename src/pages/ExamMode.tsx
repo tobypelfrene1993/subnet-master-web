@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { FieldLabel } from '../components/FieldLabel';
 import { InfoTooltip } from '../components/InfoTooltip';
 import { Panel } from '../components/Panel';
+import { explainWrongAnswer } from '../lib/learning';
 import { checkAnswer, generateExamQuestions } from '../lib/quiz';
 import type { Difficulty, QuizQuestion } from '../types/subnet';
 
@@ -90,7 +91,7 @@ export function ExamMode() {
                   <p className="font-semibold text-white">{item.question.prompt}</p>
                   <p className="mt-2 text-sm text-slate-400">Your answer: <span className="font-mono text-red-200">{item.actual}</span></p>
                   <p className="text-sm text-slate-400">Correct answer: <span className="font-mono text-cyan">{item.question.answer}</span></p>
-                  <p className="mt-2 text-sm text-slate-300">{item.question.explanation}</p>
+                  <p className="mt-2 text-sm leading-6 text-slate-300">{explainWrongAnswer(item.question.type, item.actual, item.question.answer, item.question.ip, item.question.cidr)}</p>
                 </article>
               ))}
             </div>

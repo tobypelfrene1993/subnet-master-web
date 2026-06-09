@@ -3,6 +3,10 @@ import { Panel } from '../components/Panel';
 import { InfoTooltip } from '../components/InfoTooltip';
 
 const cards: Array<{ key: PageKey; title: string; description: string; accent: string }> = [
+  { key: 'subnetWizard', title: 'Subnetting Wizard', description: 'Solve IPv4/CIDR questions step by step with hints, answer checks, and classroom explanations.', accent: 'from-cyan/35 to-emerald-500/15' },
+  { key: 'magic', title: 'Magic Number Trainer', description: 'Learn subnet boundaries visually and practice finding where an IP address belongs.', accent: 'from-amber-300/30 to-cyan/15' },
+  { key: 'vlsmWhiteboard', title: 'VLSM Whiteboard', description: 'See VLSM sorted, sized, allocated, and explained exactly like a teacher on a board.', accent: 'from-emerald-400/30 to-blue-700/15' },
+  { key: 'teacherExam', title: 'Teacher Exam Generator', description: 'Generate realistic subnetting exam questions with field-by-field scoring and explanations.', accent: 'from-rose-400/30 to-cyan/10' },
   { key: 'ip', title: 'IP Calculator', description: 'Network, broadcast, host range, masks and block size from any IPv4/CIDR.', accent: 'from-cyan/30 to-blue-700/20' },
   { key: 'binary', title: 'Binary Calculator', description: 'Convert IPv4 and CIDR masks into binary, then visualize the AND operation.', accent: 'from-cyan/25 to-emerald-500/15' },
   { key: 'vlsm', title: 'VLSM Calculator', description: 'Allocate non-overlapping subnet blocks from real host requirements.', accent: 'from-emerald-400/25 to-cyan/15' },
@@ -27,20 +31,20 @@ export function Dashboard({ onNavigate }: DashboardProps) {
           <div>
             <p className="mb-4 inline-flex rounded-full border border-cyan/30 bg-cyan/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] text-cyan">IPv4 subnetting command center</p>
             <h2 className="max-w-4xl text-5xl font-black leading-tight tracking-tight text-white md:text-7xl">
-              Leer subnetten met heldere berekeningen.
+              Leer subnetten vanaf nul met uitleg, visuals en oefeningen.
             </h2>
             <p className="mt-5 max-w-3xl text-lg leading-8 text-slate-300 md:text-xl">
-              Free subnetting calculator, VLSM planner en oefenmodus voor studenten die niet alleen antwoorden willen, maar ook de formule erachter.
+              Subnet Master is nu een volledig leerplatform: stap-voor-stap wizard, magic number training, VLSM whiteboard, binary board, calculators en exam practice.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
-              <button className="primary-button" type="button" onClick={() => onNavigate('ip')}>Start calculating</button>
-              <button className="secondary-button" type="button" onClick={() => onNavigate('practice')}>Practice questions</button>
+              <button className="primary-button" type="button" onClick={() => onNavigate('subnetWizard')}>Start learning</button>
+              <button className="secondary-button" type="button" onClick={() => onNavigate('magic')}>Practice magic numbers</button>
             </div>
             <div className="mt-7 grid max-w-2xl gap-3 sm:grid-cols-3">
-              {['Network', 'Broadcast', 'Host range'].map((item) => (
+              {['Step-by-step', 'Whiteboard', 'Exam ready'].map((item) => (
                 <div key={item} className="rounded-2xl border border-line/70 bg-slate-900/55 px-4 py-3">
                   <p className="font-mono text-sm font-semibold text-cyan">{item}</p>
-                  <p className="mt-1 text-xs text-slate-400">met stappenplan</p>
+                  <p className="mt-1 text-xs text-slate-400">voor beginners</p>
                 </div>
               ))}
             </div>
@@ -58,7 +62,7 @@ export function Dashboard({ onNavigate }: DashboardProps) {
               </div>
               <div className="flex items-center justify-between gap-4">
                 <dt className="text-slate-400">Includes</dt>
-                <dd className="text-right font-semibold text-white">Calculator, VLSM, quiz</dd>
+                <dd className="text-right font-semibold text-white">Lessons, calculators, quiz</dd>
               </div>
             </dl>
           </div>
@@ -81,7 +85,9 @@ export function Dashboard({ onNavigate }: DashboardProps) {
               <h3 className="text-xl font-bold text-white">
                 {card.title}
                 {card.key === 'vlsm' ? <InfoTooltip term="VLSM" /> : null}
+                {card.key === 'vlsmWhiteboard' ? <InfoTooltip term="VLSM" /> : null}
                 {card.key === 'binary' ? <InfoTooltip term="Binary" /> : null}
+                {card.key === 'magic' ? <InfoTooltip term="Block size" /> : null}
                 {card.key === 'practice' ? <InfoTooltip term="Practice mode" /> : null}
                 {card.key === 'exam' ? <InfoTooltip term="Exam mode" /> : null}
               </h3>

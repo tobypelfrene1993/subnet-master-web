@@ -15,6 +15,9 @@ export const termDefinitions: Record<string, string> = {
   'Usable hosts': 'The number of assignable host addresses in the subnet.',
   VLSM: 'Variable Length Subnet Masking. It lets each subnet use the smallest mask that fits its host requirement.',
   'Block size': 'The address increment in the changing octet. For /26, the block size is 64.',
+  'Magic number': 'The subnet boundary jump in the changing octet. It is usually calculated as 256 minus the mask value in that octet.',
+  'Subnetting Wizard': 'A guided lesson that asks each subnetting step before revealing the complete answer.',
+  'VLSM Whiteboard': 'A teaching view that sorts networks by host need, picks the smallest fitting CIDR, and allocates address space step by step.',
   'Practice mode': 'Untimed random subnetting questions with instant feedback.',
   'Exam mode': 'A timed quiz that tracks score and reviews missed questions at the end.',
 };

@@ -8,12 +8,21 @@ import { ExamMode } from './pages/ExamMode';
 import { CheatSheet } from './pages/CheatSheet';
 import { VisualNetworkView } from './pages/VisualNetworkView';
 import { BinaryCalculator } from './pages/BinaryCalculator';
+import { SubnettingWizard } from './pages/SubnettingWizard';
+import { MagicNumberTrainer } from './pages/MagicNumberTrainer';
+import { VlsmWhiteboard } from './pages/VlsmWhiteboard';
+import { TeacherExamGenerator } from './pages/TeacherExamGenerator';
 import type { VlsmAllocation } from './types/subnet';
+import type { LearningMode } from './lib/learning';
 
-export type PageKey = 'dashboard' | 'ip' | 'binary' | 'vlsm' | 'wizard' | 'practice' | 'exam' | 'cheat' | 'visual';
+export type PageKey = 'dashboard' | 'subnetWizard' | 'magic' | 'vlsmWhiteboard' | 'teacherExam' | 'ip' | 'binary' | 'vlsm' | 'wizard' | 'practice' | 'exam' | 'cheat' | 'visual';
 
 const pages: Array<{ key: PageKey; label: string }> = [
   { key: 'dashboard', label: 'Dashboard' },
+  { key: 'subnetWizard', label: 'Subnetting Wizard' },
+  { key: 'magic', label: 'Magic Number' },
+  { key: 'vlsmWhiteboard', label: 'VLSM Whiteboard' },
+  { key: 'teacherExam', label: 'Teacher Exam' },
   { key: 'ip', label: 'IP Calculator' },
   { key: 'binary', label: 'Binary Calculator' },
   { key: 'vlsm', label: 'VLSM' },
@@ -27,15 +36,24 @@ const pages: Array<{ key: PageKey; label: string }> = [
 export default function App() {
   const [activePage, setActivePage] = useState<PageKey>('dashboard');
   const [vlsmResults, setVlsmResults] = useState<VlsmAllocation[]>([]);
+  const [learningMode, setLearningMode] = useState<LearningMode>('beginner');
 
   const renderPage = () => {
     switch (activePage) {
       case 'dashboard':
         return <Dashboard onNavigate={setActivePage} />;
+      case 'subnetWizard':
+        return <SubnettingWizard mode={learningMode} />;
+      case 'magic':
+        return <MagicNumberTrainer mode={learningMode} />;
+      case 'vlsmWhiteboard':
+        return <VlsmWhiteboard mode={learningMode} />;
+      case 'teacherExam':
+        return <TeacherExamGenerator mode={learningMode} />;
       case 'ip':
         return <IpCalculator />;
       case 'binary':
-        return <BinaryCalculator />;
+        return <BinaryCalculator mode={learningMode} />;
       case 'vlsm':
         return <VlsmCalculator onResults={setVlsmResults} onOpenVisual={() => setActivePage('visual')} />;
       case 'wizard':
@@ -61,22 +79,36 @@ export default function App() {
               <p className="text-xs font-semibold uppercase tracking-[0.4em] text-cyan">Network lab</p>
               <h1 className="mt-1 text-3xl font-black tracking-tight text-white md:text-4xl">Subnet Master</h1>
             </button>
-            <nav className="flex gap-2 overflow-x-auto pb-1">
-              {pages.map((page) => (
-                <button
-                  key={page.key}
-                  type="button"
-                  onClick={() => setActivePage(page.key)}
-                  className={`whitespace-nowrap rounded-full px-4 py-2 text-sm font-semibold transition ${
-                    activePage === page.key
-                      ? 'bg-cyan text-slate-950 shadow-glow'
-                      : 'border border-line bg-slate-900/70 text-slate-300 hover:border-cyan/70 hover:text-white'
-                  }`}
-                >
-                  {page.label}
-                </button>
-              ))}
-            </nav>
+            <div className="flex flex-col gap-3 lg:items-end">
+              <div className="inline-flex self-start rounded-full border border-cyan/25 bg-slate-950/70 p-1 lg:self-end">
+                {(['beginner', 'expert'] as LearningMode[]).map((mode) => (
+                  <button
+                    key={mode}
+                    type="button"
+                    onClick={() => setLearningMode(mode)}
+                    className={`rounded-full px-4 py-2 text-xs font-black uppercase tracking-[0.18em] transition ${learningMode === mode ? 'bg-cyan text-slate-950' : 'text-slate-400 hover:text-white'}`}
+                  >
+                    {mode === 'beginner' ? 'Beginner Mode' : 'Expert Mode'}
+                  </button>
+                ))}
+              </div>
+              <nav className="flex max-w-full gap-2 overflow-x-auto pb-1">
+                {pages.map((page) => (
+                  <button
+                    key={page.key}
+                    type="button"
+                    onClick={() => setActivePage(page.key)}
+                    className={`whitespace-nowrap rounded-full px-4 py-2 text-sm font-semibold transition ${
+                      activePage === page.key
+                        ? 'bg-cyan text-slate-950 shadow-glow'
+                        : 'border border-line bg-slate-900/70 text-slate-300 hover:border-cyan/70 hover:text-white'
+                    }`}
+                  >
+                    {page.label}
+                  </button>
+                ))}
+              </nav>
+            </div>
           </div>
         </div>
       </header>

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { FieldLabel } from '../components/FieldLabel';
 import { InfoTooltip } from '../components/InfoTooltip';
 import { Panel } from '../components/Panel';
+import { explainWrongAnswer } from '../lib/learning';
 import { checkAnswer, generateQuestion } from '../lib/quiz';
 import type { CheckedAnswer, QuizQuestion } from '../types/subnet';
 
@@ -40,7 +41,9 @@ export function PracticeMode() {
                 {checked.correct ? 'Correct.' : 'Incorrect.'}
               </p>
               <p className="text-slate-300">Correct answer: <span className="font-mono text-cyan">{question.answer}</span></p>
-              <p className="leading-7 text-slate-300">{question.explanation}</p>
+              <p className="leading-7 text-slate-300">
+                {checked.correct ? question.explanation : explainWrongAnswer(question.type, answer, question.answer, question.ip, question.cidr)}
+              </p>
             </div>
           ) : <p className="mt-4 leading-7 text-slate-400">Submit an answer to see the correct answer and a short explanation.</p>}
         </div>

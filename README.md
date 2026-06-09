@@ -1,14 +1,12 @@
 # Subnet Master
 
-Free subnetting calculator, VLSM calculator and practice tool for networking students.
+Free subnetting learning platform, calculator, VLSM planner, and practice tool for networking students.
 
-Subnet Master is a student-friendly web app for learning IPv4 subnetting, planning VLSM networks, checking CIDR ranges, and practicing exam-style questions. It runs completely in the browser with no backend, no database, and no login.
+Subnet Master is a student-friendly web app for learning IPv4 subnetting from the first principles, planning VLSM networks, checking CIDR ranges, and practicing exam-style questions. It runs completely in the browser with no backend, no database, and no login.
 
 ## Live Demo
 
-Live demo link coming soon.
-
-When hosted, paste the Netlify link here.
+https://subnet-master-web.netlify.app/
 
 ## Who is this for?
 
@@ -19,14 +17,20 @@ When hosted, paste the Netlify link here.
 ## Features
 
 - Dashboard with quick access to every subnetting tool.
+- Subnetting Wizard that guides beginners through network bits, subnet mask, magic number, subnet block, Network ID, Broadcast, First Host, Last Host, and review.
+- Magic Number Trainer with visual subnet boundaries and random exercises.
+- VLSM Whiteboard that teaches largest-first sorting, CIDR sizing, one-by-one allocation, remaining address space, and the final table.
+- Teacher Exam Generator with realistic IPv4/CIDR questions, required fields, scoring, and educational wrong-answer explanations.
 - IPv4 calculator for network address, broadcast address, host range, subnet mask, wildcard mask, totals, usable hosts, block size, and step-by-step formula breakdown.
-- Binary Calculator with a teacher-style Binary Board explanation for IPv4/CIDR subnetting, including binary IP, binary mask, network/host bit highlighting, AND math, network ID, broadcast, and host range.
+- Binary Calculator with binary animation mode and a teacher-style Binary Board explanation for IPv4/CIDR subnetting, including binary IP, binary mask, network/host bit highlighting, AND math, network ID, broadcast, and host range.
 - VLSM calculator with original order, optimized largest-first allocation, random display order, and per-subnet CIDR formula explanation.
 - CIDR Wizard that recommends the smallest fitting CIDR for a required host count.
 - Practice Mode with random subnetting questions and instant feedback.
 - Exam Mode with timed quizzes, scoring, final results, and wrong-answer review.
 - CIDR cheat sheet from `/16` through `/32`.
 - Visual Network View for VLSM blocks and standalone subnet visualization.
+- Beginner Mode / Expert Mode toggle for detailed teaching text or compact workflows.
+- Educational feedback that explains why wrong answers are wrong instead of only showing red/green.
 - Help tooltips for important subnetting terms.
 - Polished dark professional Cisco/network-engineering style UI.
 - Responsive layout for laptops first, with tablet and mobile support.
@@ -142,7 +146,7 @@ http://127.0.0.1:4173
 npm test
 ```
 
-Tests cover IPv4 parsing, CIDR masks, wildcard masks, binary subnet explanations, network/broadcast calculations, first and last hosts, usable host counts, CIDR recommendations, VLSM allocation/no-overlap behavior, base-network-too-small errors, and quiz answer checking.
+Tests cover IPv4 parsing, CIDR masks, wildcard masks, binary subnet explanations, subnetting wizard answers, magic-number boundaries, teacher exam scoring, decimal-to-binary breakdowns, network/broadcast calculations, first and last hosts, usable host counts, CIDR recommendations, VLSM allocation/no-overlap behavior, base-network-too-small errors, and quiz answer checking.
 
 ## Project Structure
 
@@ -150,7 +154,7 @@ Tests cover IPv4 parsing, CIDR masks, wildcard masks, binary subnet explanations
 src/
   components/  Reusable UI panels, tooltips, stat grids, subnet block cards
   data/        Term definitions and static learning data
-  lib/         Browser-safe subnet, VLSM, and quiz logic
+  lib/         Browser-safe subnet, VLSM, quiz, binary, and learning logic
   pages/       Website sections
   tests/       Vitest test suite
   types/       Shared TypeScript types
@@ -161,15 +165,16 @@ Core calculation logic is separated from the UI:
 - `src/lib/subnet.ts`
 - `src/lib/vlsm.ts`
 - `src/lib/quiz.ts`
+- `src/lib/binarySubnet.ts`
+- `src/lib/learning.ts`
 
-## Future Hosting Options
+## Hosting
 
-Subnet Master is ready to become a hosted static website later. Good options include:
+Subnet Master is hosted on Netlify and deploys from GitHub:
 
-- Vercel
-- Cloudflare Pages
-- Static files served from a VPS or web server
-- Temporary self-hosted sharing through ngrok during classes or demos
+```text
+https://subnet-master-web.netlify.app/
+```
 
 The production output is generated into `dist/` by `npm run build`.
 

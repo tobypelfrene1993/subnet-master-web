@@ -1,4 +1,4 @@
-import { type ReactNode, useMemo, useState } from 'react';
+import { type ReactNode, useEffect, useMemo, useState } from 'react';
 import { ErrorBox } from '../components/ErrorBox';
 import { FieldLabel } from '../components/FieldLabel';
 import { InfoTooltip } from '../components/InfoTooltip';
@@ -13,6 +13,8 @@ import {
   ipv4ToBinaryOctets,
   ipv4ToDecimalOctets,
 } from '../lib/binarySubnet';
+import type { LearningMode } from '../lib/learning';
+import { getDecimalBinaryBreakdown } from '../lib/learning';
 import { cidrToSubnetMask } from '../lib/subnet';
 
 const cheatRows = [128, 192, 224, 240, 248, 252, 254, 255];
@@ -182,7 +184,11 @@ function MaskBits({ cidr }: { cidr: number }) {
   );
 }
 
-export function BinaryCalculator() {
+type BinaryCalculatorProps = {
+  mode: LearningMode;
+};
+
+export function BinaryCalculator({ mode }: BinaryCalculatorProps) {
   const [converterIp, setConverterIp] = useState('192.168.1.10');
   const [maskCidr, setMaskCidr] = useState('/26');
   const [andIp, setAndIp] = useState('192.168.1.130');
@@ -191,6 +197,9 @@ export function BinaryCalculator() {
   const [boardIp, setBoardIp] = useState(defaultBoardIp);
   const [boardCidr, setBoardCidr] = useState(defaultBoardCidr);
   const [copyStatus, setCopyStatus] = useState('');
+  const [animationDecimal, setAnimationDecimal] = useState('138');
+  const [animationSpeed, setAnimationSpeed] = useState('700');
+  const [revealedWeights, setRevealedWeights] = useState(0);
 
   const converter = useMemo(() => {
     try {
@@ -233,6 +242,30 @@ export function BinaryCalculator() {
     }
   }, [boardIp, boardCidr]);
 
+  const animation = useMemo(() => {
+    try {
+      return { value: getDecimalBinaryBreakdown(Number(animationDecimal)), error: null };
+    } catch (error) {
+      return { value: null, error: error instanceof Error ? error.message : 'Could not animate this decimal octet.' };
+    }
+  }, [animationDecimal]);
+
+  useEffect(() => {
+    setRevealedWeights(0);
+  }, [animationDecimal]);
+
+  useEffect(() => {
+    if (!animation.value) {
+      return;
+    }
+
+    const timer = window.setInterval(() => {
+      setRevealedWeights((current) => current >= animation.value!.weights.length ? 0 : current + 1);
+    }, Number(animationSpeed));
+
+    return () => window.clearInterval(timer);
+  }, [animation.value, animationSpeed]);
+
   const resetBoardExample = () => {
     setBoardIp(defaultBoardIp);
     setBoardCidr(defaultBoardCidr);
@@ -264,6 +297,61 @@ export function BinaryCalculator() {
           </p>
         </div>
       </section>
+
+      <Panel title="Binary Animation Mode" eyebrow="Decimal to binary">
+        <div className="grid gap-6 lg:grid-cols-[0.36fr_0.64fr]">
+          <div className="space-y-4">
+            <div>
+              <FieldLabel>Decimal octet</FieldLabel>
+              <input type="number" min="0" max="255" value={animationDecimal} onChange={(event) => setAnimationDecimal(event.target.value)} placeholder="138" />
+            </div>
+            <div>
+              <FieldLabel>Animation speed</FieldLabel>
+              <select value={animationSpeed} onChange={(event) => setAnimationSpeed(event.target.value)}>
+                <option value="1100">Slow</option>
+                <option value="700">Normal</option>
+                <option value="350">Fast</option>
+              </select>
+            </div>
+            <ErrorBox message={animation.error} />
+            {mode === 'beginner' ? (
+              <p className="rounded-2xl border border-cyan/20 bg-cyan/10 p-4 text-sm leading-6 text-slate-200">
+                Read the powers of two from left to right. If the decimal number still has enough value left, turn that bit on with 1. Otherwise use 0.
+              </p>
+            ) : null}
+          </div>
+          {animation.value ? (
+            <div className="whiteboard-card space-y-5 p-5">
+              <div className="grid gap-3 sm:grid-cols-3">
+                <div className="rounded-2xl border border-line bg-slate-950/60 p-4">
+                  <p className="text-sm text-slate-400">Decimal</p>
+                  <p className="mt-1 font-mono text-4xl font-black text-white">{animation.value.decimal}</p>
+                </div>
+                <div className="rounded-2xl border border-cyan/30 bg-cyan/10 p-4 sm:col-span-2">
+                  <p className="text-sm text-slate-400">Selected powers</p>
+                  <p className="mt-1 font-mono text-3xl font-black text-cyan">{animation.value.expression}</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-8 gap-2">
+                {animation.value.weights.map((weight, index) => {
+                  const selected = animation.value!.selectedWeights.includes(weight);
+                  const revealed = index < revealedWeights;
+                  return (
+                    <div key={weight} className={`binary-animation-cell ${revealed ? 'binary-animation-cell-revealed' : ''} ${selected ? 'binary-animation-cell-selected' : ''}`}>
+                      <span className="text-xs text-slate-400">{weight}</span>
+                      <strong>{revealed ? (selected ? '1' : '0') : '?'}</strong>
+                    </div>
+                  );
+                })}
+              </div>
+              <div className="rounded-2xl border border-emerald-300/25 bg-emerald-400/10 p-4">
+                <p className="text-sm text-slate-400">Binary result</p>
+                <p className="mt-1 font-mono text-4xl font-black tracking-[0.2em] text-emerald-200">{revealedWeights >= 8 ? animation.value.binary : '????????'}</p>
+              </div>
+            </div>
+          ) : null}
+        </div>
+      </Panel>
 
       <Panel title="Step-by-step subnet explanation" eyebrow="Binary Board">
         <div className="space-y-6">
@@ -317,7 +405,7 @@ export function BinaryCalculator() {
                 </BoardStep>
 
                 <BoardStep number={3} title="Subnet mask from CIDR" explanation="The subnet mask has 1s for network bits and 0s for host bits.">
-                  <div className="grid gap-3 sm:grid-cols-2">
+                  <div className="space-y-3">
                     <div className="rounded-2xl border border-cyan/20 bg-cyan/10 p-4">
                       <p className="text-sm text-slate-400">CIDR</p>
                       <p className="mt-1 font-mono text-3xl font-black text-cyan">/{board.value.cidr}</p>
@@ -336,7 +424,7 @@ export function BinaryCalculator() {
                 <BoardStep number={5} title="Network bits and host bits" explanation="The first CIDR bits are the network. The rest are host bits inside that network.">
                   <div className="space-y-4">
                     <BinaryBoardOctets octets={board.value.ipBinaryOctets} bits={board.value.ipBits} />
-                    <div className="grid gap-3 sm:grid-cols-2">
+                    <div className="space-y-3">
                       <div className="rounded-2xl border border-cyan/30 bg-cyan/10 p-4">
                         <p className="text-sm text-slate-400">Network bits</p>
                         <p className="mt-1 font-mono text-3xl font-black text-cyan">{board.value.networkBits}</p>
@@ -385,7 +473,7 @@ export function BinaryCalculator() {
                 </BoardStep>
 
                 <BoardStep number={9} title="First and last host" explanation="Usable hosts are between network ID and broadcast.">
-                  <div className="grid gap-3 sm:grid-cols-2">
+                  <div className="space-y-3">
                     <div className="rounded-2xl border border-line/70 bg-slate-950/70 p-4">
                       <p className="text-sm text-slate-400">First host</p>
                       <p className="mt-1 font-mono text-2xl font-black text-white">{board.value.firstUsableHost}</p>
