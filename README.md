@@ -1,8 +1,20 @@
 # Subnet Master
 
-Subnet Master is a modern frontend-only subnetting learning and calculation website for IT Network and System Administration students.
+Free subnetting calculator, VLSM calculator and practice tool for networking students.
 
-It runs completely in the browser. There is no backend, no database, and no login.
+Subnet Master is a student-friendly web app for learning IPv4 subnetting, planning VLSM networks, checking CIDR ranges, and practicing exam-style questions. It runs completely in the browser with no backend, no database, and no login.
+
+## Live Demo
+
+Live demo link coming soon.
+
+When hosted, paste the Netlify link here.
+
+## Who is this for?
+
+- IT Network and System Administration students
+- People learning IPv4 subnetting
+- Students practicing VLSM and CIDR
 
 ## Features
 
