@@ -12,13 +12,15 @@ import {
   recommendCidrForHosts,
   validateCidr,
 } from './subnet';
-import type { VlsmAllocation, VlsmInput, VlsmOrder } from '../types/subnet';
+import type { AvailableSubnet, VlsmAllocation, VlsmInput, VlsmOrder, VlsmPlan, VlsmUnusedRange } from '../types/subnet';
 
 type ParsedNetwork = {
   networkInt: number;
   cidr: number;
   broadcastInt: number;
 };
+
+const MAX_AVAILABLE_SUBNETS = 4096;
 
 export function parseNetworkCidr(value: string): ParsedNetwork {
   const [ipPart, cidrPart, extra] = value.trim().split('/');
@@ -112,6 +114,88 @@ export function calculateVlsm(
   }
 
   return allocations;
+}
+
+function calculateUnusedRanges(baseNetwork: string, allocations: VlsmAllocation[]): VlsmUnusedRange[] {
+  const base = parseNetworkCidr(baseNetwork);
+  const sorted = [...allocations].sort((a, b) => a.startInt - b.startInt);
+  const unusedRanges: VlsmUnusedRange[] = [];
+  let cursor = base.networkInt;
+
+  for (const allocation of sorted) {
+    if (cursor < allocation.startInt) {
+      const endInt = allocation.startInt - 1;
+      unusedRanges.push({
+        startAddress: intToIPv4(cursor),
+        endAddress: intToIPv4(endInt),
+        totalAddresses: endInt - cursor + 1,
+        startInt: cursor,
+        endInt,
+      });
+    }
+
+    cursor = allocation.endInt + 1;
+  }
+
+  if (cursor <= base.broadcastInt) {
+    unusedRanges.push({
+      startAddress: intToIPv4(cursor),
+      endAddress: intToIPv4(base.broadcastInt),
+      totalAddresses: base.broadcastInt - cursor + 1,
+      startInt: cursor,
+      endInt: base.broadcastInt,
+    });
+  }
+
+  return unusedRanges;
+}
+
+export function calculateVlsmPlan(
+  baseNetwork: string,
+  rows: VlsmInput[],
+  order: VlsmOrder,
+  random: () => number = Math.random,
+): VlsmPlan {
+  const allocations = calculateVlsm(baseNetwork, rows, order, random);
+  return {
+    allocations,
+    unusedRanges: calculateUnusedRanges(baseNetwork, allocations),
+  };
+}
+
+export function calculateAvailableSubnets(baseNetwork: string, targetCidrInput: number): AvailableSubnet[] {
+  const base = parseNetworkCidr(baseNetwork);
+  const targetCidr = validateCidr(targetCidrInput, 1, 32);
+
+  if (targetCidr < base.cidr) {
+    throw new SubnetError('Target CIDR must be greater than or equal to the base CIDR. Example: /26 can fit inside /24, but /22 cannot.');
+  }
+
+  const blockSize = getTotalAddresses(targetCidr);
+  const subnetCount = getTotalAddresses(base.cidr) / blockSize;
+
+  if (subnetCount > MAX_AVAILABLE_SUBNETS) {
+    throw new SubnetError(`This would create ${subnetCount.toLocaleString()} subnet rows. Use a smaller base network or a larger target CIDR.`);
+  }
+
+  const subnets: AvailableSubnet[] = [];
+
+  for (let networkInt = base.networkInt; networkInt <= base.broadcastInt; networkInt += blockSize) {
+    const broadcastInt = networkInt + blockSize - 1;
+    subnets.push({
+      subnet: `${intToIPv4(networkInt)}/${targetCidr}`,
+      networkAddress: intToIPv4(networkInt),
+      firstHost: intToIPv4(getFirstHostInt(networkInt, targetCidr)),
+      lastHost: intToIPv4(getLastHostInt(broadcastInt, targetCidr)),
+      broadcastAddress: intToIPv4(broadcastInt),
+      usableHosts: getUsableHosts(targetCidr),
+      totalAddresses: blockSize,
+      startInt: networkInt,
+      endInt: broadcastInt,
+    });
+  }
+
+  return subnets;
 }
 
 export function allocationsOverlap(allocations: VlsmAllocation[]): boolean {

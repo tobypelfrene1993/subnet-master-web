@@ -1,8 +1,8 @@
 # Subnet Master
 
-Free subnetting learning platform, calculator, VLSM planner, and practice tool for networking students.
+Fast subnetting toolkit for calculation, VLSM planning, subnet design, practice, and reference.
 
-Subnet Master is a student-friendly web app for learning IPv4 subnetting from the first principles, planning VLSM networks, checking CIDR ranges, and practicing exam-style questions. It runs completely in the browser with no backend, no database, and no login.
+Subnet Master is a browser-only web app for quickly calculating IPv4 subnet details, designing VLSM plans, listing available subnet blocks, finding the smallest CIDR for host requirements, and practicing subnetting when needed. It runs completely in the browser with no backend, no database, and no login.
 
 ## Live Demo
 
@@ -10,21 +10,23 @@ https://subnet-master-web.netlify.app/
 
 ## Who is this for?
 
+- Network engineers and technicians who need quick subnet answers
 - IT Network and System Administration students
-- People learning IPv4 subnetting
-- Students practicing VLSM and CIDR
+- People planning IPv4 VLSM and CIDR ranges
 
 ## Features
 
-- Dashboard with quick access to every subnetting tool.
+- Action-focused dashboard with Quick Calculator, VLSM Designer, Available Subnets, and Subnet Finder as the primary tools.
+- Quick Subnet Calculator for IP/CIDR input, network ID, broadcast, first host, last host, subnet mask, wildcard mask, usable hosts, total addresses, and magic number.
+- VLSM Designer with original order, optimized largest-first allocation, random display order, per-subnet CIDR formula explanation, and remaining unused address space.
+- Available Subnets tool that lists every target subnet block inside a larger base network, including network ID, first host, last host, broadcast, and usable hosts.
+- Subnet Finder that recommends the smallest fitting CIDR for a required host count.
 - Subnetting Wizard that guides beginners through network bits, subnet mask, magic number, subnet block, Network ID, Broadcast, First Host, Last Host, and review.
 - Magic Number Trainer with visual subnet boundaries and random exercises.
 - VLSM Whiteboard that teaches largest-first sorting, CIDR sizing, one-by-one allocation, remaining address space, and the final table.
 - Teacher Exam Generator with realistic IPv4/CIDR questions, required fields, scoring, and educational wrong-answer explanations.
-- IPv4 calculator for network address, broadcast address, host range, subnet mask, wildcard mask, totals, usable hosts, block size, and step-by-step formula breakdown.
+- Quick Calculator formula breakdown for network address, broadcast address, host range, subnet mask, wildcard mask, totals, usable hosts, and magic number.
 - Binary Calculator with binary animation mode and a teacher-style Binary Board explanation for IPv4/CIDR subnetting, including binary IP, binary mask, network/host bit highlighting, AND math, network ID, broadcast, and host range.
-- VLSM calculator with original order, optimized largest-first allocation, random display order, and per-subnet CIDR formula explanation.
-- CIDR Wizard that recommends the smallest fitting CIDR for a required host count.
 - Practice Mode with random subnetting questions and instant feedback.
 - Exam Mode with timed quizzes, scoring, final results, and wrong-answer review.
 - CIDR cheat sheet from `/16` through `/32`.
@@ -146,7 +148,7 @@ http://127.0.0.1:4173
 npm test
 ```
 
-Tests cover IPv4 parsing, CIDR masks, wildcard masks, binary subnet explanations, subnetting wizard answers, magic-number boundaries, teacher exam scoring, decimal-to-binary breakdowns, network/broadcast calculations, first and last hosts, usable host counts, CIDR recommendations, VLSM allocation/no-overlap behavior, base-network-too-small errors, and quiz answer checking.
+Tests cover IPv4 parsing, CIDR masks, wildcard masks, binary subnet explanations, subnetting wizard answers, magic-number boundaries, teacher exam scoring, decimal-to-binary breakdowns, network/broadcast calculations, first and last hosts, usable host counts, CIDR recommendations, available subnet generation, invalid target CIDR handling, VLSM allocation/no-overlap behavior, VLSM unused space, base-network-too-small errors, and quiz answer checking.
 
 ## Project Structure
 

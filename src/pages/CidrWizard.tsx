@@ -21,13 +21,13 @@ export function CidrWizard() {
 
   return (
     <div className="grid gap-6 lg:grid-cols-[0.7fr_1.3fr]">
-      <Panel title="CIDR Wizard" eyebrow="Right-size a subnet">
+      <Panel title="Subnet Finder" eyebrow="Smallest fitting CIDR">
         <div className="space-y-4">
           <div>
             <FieldLabel term="Usable hosts">Required number of hosts</FieldLabel>
             <input type="number" min="1" value={hosts} onChange={(event) => setHosts(event.target.value)} />
           </div>
-          <button type="button" className="primary-button w-full" onClick={calculate}>Recommend CIDR</button>
+          <button type="button" className="primary-button w-full" onClick={calculate}>Find smallest subnet</button>
           <ErrorBox message={error} />
         </div>
       </Panel>

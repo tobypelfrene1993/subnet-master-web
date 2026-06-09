@@ -36,6 +36,31 @@ export type VlsmAllocation = {
   endInt: number;
 };
 
+export type VlsmUnusedRange = {
+  startAddress: string;
+  endAddress: string;
+  totalAddresses: number;
+  startInt: number;
+  endInt: number;
+};
+
+export type VlsmPlan = {
+  allocations: VlsmAllocation[];
+  unusedRanges: VlsmUnusedRange[];
+};
+
+export type AvailableSubnet = {
+  subnet: string;
+  networkAddress: string;
+  firstHost: string;
+  lastHost: string;
+  broadcastAddress: string;
+  usableHosts: number;
+  totalAddresses: number;
+  startInt: number;
+  endInt: number;
+};
+
 export type QuizQuestionType =
   | 'network'
   | 'broadcast'

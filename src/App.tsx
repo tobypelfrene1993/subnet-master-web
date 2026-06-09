@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Dashboard } from './pages/Dashboard';
 import { IpCalculator } from './pages/IpCalculator';
 import { VlsmCalculator } from './pages/VlsmCalculator';
+import { AvailableSubnets } from './pages/AvailableSubnets';
 import { CidrWizard } from './pages/CidrWizard';
 import { PracticeMode } from './pages/PracticeMode';
 import { ExamMode } from './pages/ExamMode';
@@ -15,7 +16,7 @@ import { TeacherExamGenerator } from './pages/TeacherExamGenerator';
 import type { VlsmAllocation } from './types/subnet';
 import type { LearningMode } from './lib/learning';
 
-export type PageKey = 'dashboard' | 'subnetWizard' | 'magic' | 'vlsmWhiteboard' | 'teacherExam' | 'ip' | 'binary' | 'vlsm' | 'wizard' | 'practice' | 'exam' | 'cheat' | 'visual';
+export type PageKey = 'dashboard' | 'subnetWizard' | 'magic' | 'vlsmWhiteboard' | 'teacherExam' | 'ip' | 'binary' | 'vlsm' | 'available' | 'wizard' | 'practice' | 'exam' | 'cheat' | 'visual';
 
 type NavItem = { key: PageKey; label: string; short: string };
 type NavSection = { title: string; items: NavItem[] };
@@ -26,34 +27,25 @@ const navSections: NavSection[] = [
     items: [{ key: 'dashboard', label: 'Dashboard', short: 'DB' }],
   },
   {
-    title: 'Learning',
+    title: 'Primary tools',
     items: [
+      { key: 'ip', label: 'Quick Calculator', short: 'QC' },
+      { key: 'vlsm', label: 'VLSM Designer', short: 'VD' },
+      { key: 'available', label: 'Available Subnets', short: 'AS' },
+      { key: 'wizard', label: 'Subnet Finder', short: 'SF' },
+      { key: 'practice', label: 'Practice', short: 'PR' },
+      { key: 'cheat', label: 'Reference', short: 'RF' },
+    ],
+  },
+  {
+    title: 'Learning tools',
+    items: [
+      { key: 'binary', label: 'Binary Calculator', short: 'BI' },
       { key: 'subnetWizard', label: 'Subnetting Wizard', short: 'SW' },
       { key: 'magic', label: 'Magic Number Trainer', short: 'MN' },
-      { key: 'binary', label: 'Binary Calculator', short: 'BI' },
       { key: 'vlsmWhiteboard', label: 'VLSM Whiteboard', short: 'VW' },
-    ],
-  },
-  {
-    title: 'Calculators',
-    items: [
-      { key: 'ip', label: 'IP Calculator', short: 'IP' },
-      { key: 'wizard', label: 'CIDR Wizard', short: 'CW' },
-      { key: 'vlsm', label: 'VLSM Calculator', short: 'VC' },
-    ],
-  },
-  {
-    title: 'Practice',
-    items: [
-      { key: 'practice', label: 'Practice Mode', short: 'PM' },
       { key: 'teacherExam', label: 'Teacher Exam', short: 'TE' },
       { key: 'exam', label: 'Exam Mode', short: 'EM' },
-    ],
-  },
-  {
-    title: 'Reference',
-    items: [
-      { key: 'cheat', label: 'CIDR Cheat Sheet', short: 'CS' },
       { key: 'visual', label: 'Visual Network View', short: 'VN' },
     ],
   },
@@ -84,6 +76,8 @@ export default function App() {
         return <BinaryCalculator mode={learningMode} />;
       case 'vlsm':
         return <VlsmCalculator onResults={setVlsmResults} onOpenVisual={() => setActivePage('visual')} />;
+      case 'available':
+        return <AvailableSubnets />;
       case 'wizard':
         return <CidrWizard />;
       case 'practice':
@@ -108,7 +102,7 @@ export default function App() {
     <div className="flex h-full flex-col gap-5">
       <div className="rounded-3xl border border-cyan/20 bg-slate-950/70 p-4 shadow-glow">
         <button type="button" onClick={() => navigate('dashboard')} className="block w-full text-left">
-          <p className="text-xs font-semibold uppercase tracking-[0.34em] text-cyan">Network lab</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.34em] text-cyan">Subnet toolkit</p>
           {!collapsed ? <h1 className="mt-1 text-2xl font-black tracking-tight text-white">Subnet Master</h1> : <h1 className="mt-2 font-mono text-xl font-black text-white">SM</h1>}
         </button>
       </div>
@@ -166,7 +160,7 @@ export default function App() {
         <header className="mb-6 flex items-center justify-between gap-4 rounded-3xl border border-cyan/20 bg-slate-950/60 p-4 shadow-glow backdrop-blur-xl lg:mb-8">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan">{activeLabel}</p>
-            <h2 className="mt-1 text-2xl font-black tracking-tight text-white md:text-3xl">Professional subnetting training platform</h2>
+            <h2 className="mt-1 text-2xl font-black tracking-tight text-white md:text-3xl">Fast subnet calculation and planning</h2>
           </div>
           <div className="flex items-center gap-2">
             <button type="button" className="secondary-button hidden lg:inline-flex" onClick={() => setSidebarCollapsed((current) => !current)}>

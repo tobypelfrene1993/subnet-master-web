@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { allocationsOverlap, calculateVlsm } from '../lib/vlsm';
+import { allocationsOverlap, calculateVlsm, calculateVlsmPlan } from '../lib/vlsm';
 
 describe('VLSM allocation', () => {
   it('allocates optimized subnets largest first without overlap', () => {
@@ -40,5 +40,24 @@ describe('VLSM allocation', () => {
     expect(() => calculateVlsm('192.168.1.0/30', [
       { id: 'a', name: 'Too large', hosts: 10 },
     ], 'optimized')).toThrow(/base network is too small/i);
+  });
+
+  it('reports remaining unused address space after VLSM allocation', () => {
+    const plan = calculateVlsmPlan('192.168.1.0/24', [
+      { id: 'a', name: 'A', hosts: 50 },
+      { id: 'b', name: 'B', hosts: 25 },
+    ], 'optimized');
+
+    expect(plan.allocations.map((result) => `${result.networkAddress}/${result.cidr}`)).toEqual([
+      '192.168.1.0/26',
+      '192.168.1.64/27',
+    ]);
+    expect(plan.unusedRanges).toEqual([
+      expect.objectContaining({
+        startAddress: '192.168.1.96',
+        endAddress: '192.168.1.255',
+        totalAddresses: 160,
+      }),
+    ]);
   });
 });

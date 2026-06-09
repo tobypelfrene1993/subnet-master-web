@@ -6,6 +6,16 @@ import { StatGrid } from '../components/StatGrid';
 import { calculateSubnet } from '../lib/subnet';
 import type { SubnetSummary } from '../types/subnet';
 
+function parseIpCidr(value: string): { ip: string; cidr: number } {
+  const [ipPart, cidrPart, extra] = value.trim().split('/');
+
+  if (!ipPart || !cidrPart || extra !== undefined) {
+    throw new Error('Enter an IP/CIDR value, for example 192.168.1.10/24.');
+  }
+
+  return { ip: ipPart, cidr: Number(cidrPart) };
+}
+
 type FormulaStep = {
   label: string;
   formula: string;
@@ -76,14 +86,14 @@ function getFormulaSteps(result: SubnetSummary): FormulaStep[] {
 }
 
 export function IpCalculator() {
-  const [ip, setIp] = useState('192.168.1.10');
-  const [cidr, setCidr] = useState('24');
+  const [ipCidr, setIpCidr] = useState('192.168.1.10/24');
   const [result, setResult] = useState<SubnetSummary | null>(() => calculateSubnet('192.168.1.10', 24));
   const [error, setError] = useState<string | null>(null);
 
-  const calculate = () => {
+  const calculate = (value: string) => {
     try {
-      setResult(calculateSubnet(ip, Number(cidr)));
+      const parsed = parseIpCidr(value);
+      setResult(calculateSubnet(parsed.ip, parsed.cidr));
       setError(null);
     } catch (err) {
       setResult(null);
@@ -91,26 +101,27 @@ export function IpCalculator() {
     }
   };
 
+  const updateIpCidr = (value: string) => {
+    setIpCidr(value);
+    calculate(value);
+  };
+
   return (
     <div className="grid gap-6 lg:grid-cols-[0.78fr_1.22fr]">
-      <Panel title="IP Calculator" eyebrow="Subnet math" className="self-start">
+      <Panel title="Quick Subnet Calculator" eyebrow="IP/CIDR lookup" className="self-start">
         <div className="space-y-4">
           <div className="rounded-2xl border border-cyan/20 bg-cyan/10 p-4 text-sm leading-6 text-slate-300">
-            Vul een IPv4-adres en CIDR-prefix in. De calculator toont niet alleen het antwoord, maar ook hoe de belangrijkste subnetformules worden toegepast.
+            Enter one IPv4/CIDR value and get the network ID, broadcast, host range, masks, usable hosts, and magic number immediately.
           </div>
           <div>
-            <FieldLabel term="IP address">IPv4 address</FieldLabel>
-            <input value={ip} onChange={(event) => setIp(event.target.value)} placeholder="192.168.1.10" />
+            <FieldLabel term="CIDR">IP/CIDR</FieldLabel>
+            <input value={ipCidr} onChange={(event) => updateIpCidr(event.target.value)} placeholder="192.168.1.10/24" />
           </div>
-          <div>
-            <FieldLabel term="CIDR">CIDR prefix</FieldLabel>
-            <input type="number" min="1" max="32" value={cidr} onChange={(event) => setCidr(event.target.value)} placeholder="24" />
-          </div>
-          <button type="button" className="primary-button w-full" onClick={calculate}>Calculate subnet</button>
+          <button type="button" className="secondary-button w-full" onClick={() => updateIpCidr('192.168.1.10/24')}>Reset example</button>
           <ErrorBox message={error} />
         </div>
       </Panel>
-      <Panel title="Results" eyebrow="Address plan">
+      <Panel title="Results" eyebrow="Calculated immediately">
         {result ? (
           <div className="space-y-6">
             <StatGrid
@@ -121,9 +132,9 @@ export function IpCalculator() {
                 { label: 'Last usable host', value: result.lastUsableHost },
                 { label: 'Subnet mask', value: result.subnetMask },
                 { label: 'Wildcard mask', value: result.wildcardMask },
-                { label: 'Total addresses', value: result.totalAddresses.toLocaleString() },
                 { label: 'Usable hosts', value: result.usableHosts.toLocaleString() },
-                { label: 'Block size', value: result.blockSize },
+                { label: 'Magic number', value: result.blockSize },
+                { label: 'Total addresses', value: result.totalAddresses.toLocaleString() },
               ]}
             />
             <div>

@@ -3,8 +3,8 @@ import { ErrorBox } from '../components/ErrorBox';
 import { FieldLabel } from '../components/FieldLabel';
 import { InfoTooltip } from '../components/InfoTooltip';
 import { Panel } from '../components/Panel';
-import { calculateVlsm } from '../lib/vlsm';
-import type { VlsmAllocation, VlsmInput, VlsmOrder } from '../types/subnet';
+import { calculateVlsmPlan } from '../lib/vlsm';
+import type { VlsmAllocation, VlsmInput, VlsmOrder, VlsmUnusedRange } from '../types/subnet';
 
 const initialRows: VlsmInput[] = [
   { id: 'lan-a', name: 'LAN A', hosts: 50 },
@@ -28,6 +28,7 @@ export function VlsmCalculator({ onResults, onOpenVisual }: VlsmCalculatorProps)
   const [rows, setRows] = useState<VlsmInput[]>(initialRows);
   const [order, setOrder] = useState<VlsmOrder>('optimized');
   const [results, setResults] = useState<VlsmAllocation[]>([]);
+  const [unusedRanges, setUnusedRanges] = useState<VlsmUnusedRange[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   const updateRow = (id: string, patch: Partial<VlsmInput>) => {
@@ -44,12 +45,14 @@ export function VlsmCalculator({ onResults, onOpenVisual }: VlsmCalculatorProps)
 
   const calculate = () => {
     try {
-      const allocations = calculateVlsm(baseNetwork, rows, order);
-      setResults(allocations);
-      onResults(allocations);
+      const plan = calculateVlsmPlan(baseNetwork, rows, order);
+      setResults(plan.allocations);
+      setUnusedRanges(plan.unusedRanges);
+      onResults(plan.allocations);
       setError(null);
     } catch (err) {
       setResults([]);
+      setUnusedRanges([]);
       onResults([]);
       setError(err instanceof Error ? err.message : 'Could not calculate VLSM.');
     }
@@ -57,9 +60,9 @@ export function VlsmCalculator({ onResults, onOpenVisual }: VlsmCalculatorProps)
 
   return (
     <div className="space-y-6">
-      <Panel title="VLSM Calculator" eyebrow="Variable length planning">
+      <Panel title="VLSM Designer" eyebrow="Address planner">
         <div className="mb-5 rounded-2xl border border-cyan/20 bg-cyan/10 p-4 text-sm leading-6 text-slate-300">
-          VLSM kiest per rij de kleinste subnetgrootte die past. In optimized mode worden de grootste host requirements eerst geplaatst om overlap te voorkomen.
+          Enter a base network and the host groups you need. Optimized mode places the largest networks first and returns a practical non-overlapping address plan.
         </div>
         <div className="grid gap-4 lg:grid-cols-[1fr_0.6fr_0.6fr]">
           <div>
@@ -75,7 +78,7 @@ export function VlsmCalculator({ onResults, onOpenVisual }: VlsmCalculatorProps)
             </select>
           </div>
           <div className="flex items-end">
-            <button type="button" className="primary-button w-full" onClick={calculate}>Calculate VLSM</button>
+            <button type="button" className="primary-button w-full" onClick={calculate}>Design subnet plan</button>
           </div>
         </div>
         <div className="mt-5 overflow-x-auto rounded-2xl border border-line">
@@ -105,7 +108,7 @@ export function VlsmCalculator({ onResults, onOpenVisual }: VlsmCalculatorProps)
         <div className="mt-4"><ErrorBox message={error} /></div>
       </Panel>
 
-      <Panel title="VLSM result table" eyebrow="Non-overlapping allocations">
+      <Panel title="Recommended subnet plan" eyebrow="Non-overlapping allocations">
         <p className="mb-4 text-sm text-slate-400">
           Results are allocated as real subnet ranges. Random order only changes display order, not the allocation math.
           <InfoTooltip term="Block size" />
@@ -142,6 +145,31 @@ export function VlsmCalculator({ onResults, onOpenVisual }: VlsmCalculatorProps)
                 </tr>
               ))}
               {results.length === 0 ? <tr><td colSpan={10} className="text-slate-400">Run a calculation to populate the table.</td></tr> : null}
+            </tbody>
+          </table>
+        </div>
+      </Panel>
+
+      <Panel title="Remaining unused address space" eyebrow="Unallocated range">
+        <div className="overflow-x-auto rounded-2xl border border-line">
+          <table>
+            <thead className="bg-slate-950/70">
+              <tr>
+                <th>Start address</th>
+                <th>End address</th>
+                <th>Total addresses</th>
+              </tr>
+            </thead>
+            <tbody>
+              {unusedRanges.map((range) => (
+                <tr key={`${range.startAddress}-${range.endAddress}`}>
+                  <td className="font-mono">{range.startAddress}</td>
+                  <td className="font-mono">{range.endAddress}</td>
+                  <td>{range.totalAddresses.toLocaleString()}</td>
+                </tr>
+              ))}
+              {results.length === 0 ? <tr><td colSpan={3} className="text-slate-400">Run a design to see unused space.</td></tr> : null}
+              {results.length > 0 && unusedRanges.length === 0 ? <tr><td colSpan={3} className="text-slate-400">No unused address space remains in the base network.</td></tr> : null}
             </tbody>
           </table>
         </div>
