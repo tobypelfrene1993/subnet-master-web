@@ -100,7 +100,7 @@ function BinaryBoardOctets({
 }) {
   return (
     <div className="overflow-x-auto rounded-2xl border border-line/70 bg-slate-950/70 p-3">
-      <div className="flex min-w-max items-end gap-2">
+      <div className="flex flex-wrap items-end gap-2">
         {octets.map((octet, octetIndex) => (
           <div key={`${octet}-${octetIndex}`} className="flex items-end gap-2">
             <div className="rounded-2xl border border-slate-700/80 bg-slate-900/75 p-3">
@@ -140,7 +140,7 @@ function BoardStep({
   children: ReactNode;
 }) {
   return (
-    <article className="rounded-3xl border border-cyan/15 bg-slate-950/55 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+    <article className="w-full rounded-3xl border border-cyan/15 bg-slate-950/55 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
       <div className="mb-4 flex items-start gap-3">
         <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-cyan/35 bg-cyan/10 font-mono text-sm font-black text-cyan">{number}</span>
         <div>
@@ -305,7 +305,7 @@ export function BinaryCalculator() {
                 <span className="rounded-full border border-emerald-300/35 bg-emerald-400/10 px-3 py-2 text-emerald-200">Result bits = green</span>
               </div>
 
-              <div className="grid gap-4 xl:grid-cols-2">
+              <div className="space-y-4">
                 <BoardStep number={1} title="Decimal IP" explanation="CIDR tells how many bits are network bits.">
                   <p className="rounded-2xl border border-line/70 bg-slate-950/70 px-4 py-3 font-mono text-2xl font-black text-white">
                     {board.value.decimalOctets.join(' . ')}
