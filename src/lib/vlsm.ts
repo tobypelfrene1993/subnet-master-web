@@ -12,7 +12,7 @@ import {
   recommendCidrForHosts,
   validateCidr,
 } from './subnet';
-import type { AvailableSubnet, VlsmAllocation, VlsmInput, VlsmOrder, VlsmPlan, VlsmUnusedRange } from '../types/subnet';
+import type { AvailableSubnet, VlsmAllocation, VlsmInput, VlsmOrder, VlsmPlan, VlsmRequirementInput, VlsmUnusedRange } from '../types/subnet';
 
 type ParsedNetwork = {
   networkInt: number;
@@ -21,6 +21,14 @@ type ParsedNetwork = {
 };
 
 const MAX_AVAILABLE_SUBNETS = 4096;
+
+function assertWholePositive(value: number, label: string): number {
+  if (!Number.isInteger(value) || value < 1) {
+    throw new SubnetError(`${label} must be a whole number greater than 0.`);
+  }
+
+  return value;
+}
 
 export function parseNetworkCidr(value: string): ParsedNetwork {
   const [ipPart, cidrPart, extra] = value.trim().split('/');
@@ -68,9 +76,7 @@ export function calculateVlsm(
   }
 
   for (const row of usableRows) {
-    if (!Number.isInteger(row.hosts) || row.hosts < 1) {
-      throw new SubnetError(`Required hosts for ${row.name} must be a whole number greater than 0.`);
-    }
+    assertWholePositive(row.hosts, `Required hosts for ${row.name}`);
   }
 
   const allocationOrder = order === 'optimized'
@@ -156,11 +162,96 @@ export function calculateVlsmPlan(
   order: VlsmOrder,
   random: () => number = Math.random,
 ): VlsmPlan {
+  const base = parseNetworkCidr(baseNetwork);
   const allocations = calculateVlsm(baseNetwork, rows, order, random);
+  const totalRequiredHosts = allocations.reduce((sum, allocation) => sum + allocation.requiredHosts, 0);
+  const totalAllocatedAddresses = allocations.reduce((sum, allocation) => sum + allocation.totalAddresses, 0);
+
   return {
+    baseNetwork: `${intToIPv4(base.networkInt)}/${base.cidr}`,
+    baseCidr: base.cidr,
+    baseSubnetMask: cidrToSubnetMask(base.cidr),
+    baseBroadcast: intToIPv4(base.broadcastInt),
+    baseTotalAddresses: getTotalAddresses(base.cidr),
     allocations,
     unusedRanges: calculateUnusedRanges(baseNetwork, allocations),
+    totalRequiredHosts,
+    totalAllocatedAddresses,
+    efficiencyPercent: totalAllocatedAddresses === 0 ? 0 : (totalRequiredHosts / totalAllocatedAddresses) * 100,
   };
+}
+
+function parseTextRequirementToken(token: string, index: number): VlsmRequirementInput {
+  let value = token.trim().replace(/^[-*]\s*/, '');
+  if (!value) {
+    throw new SubnetError('Each host requirement must include a required host count.');
+  }
+
+  let quantity = 1;
+  const quantityMatch = value.match(/\s+(?:x|qty|quantity)\s*(\d+)$/i);
+  if (quantityMatch) {
+    quantity = Number(quantityMatch[1]);
+    value = value.slice(0, quantityMatch.index).trim();
+  }
+
+  const hostMatch = value.match(/^(.*?)(\d+)$/);
+  if (!hostMatch) {
+    throw new SubnetError(`Could not find a required host count in "${token.trim()}".`);
+  }
+
+  const hosts = Number(hostMatch[2]);
+  const name = hostMatch[1].trim().replace(/[,:-]+$/, '').trim();
+
+  assertWholePositive(hosts, 'Required hosts');
+  assertWholePositive(quantity, 'Quantity');
+
+  return {
+    id: `text-${index + 1}`,
+    name,
+    hosts,
+    quantity,
+  };
+}
+
+export function parseVlsmTextRequirements(text: string): VlsmRequirementInput[] {
+  const tokens = text
+    .split(/[\n,]+/)
+    .map((token) => token.trim())
+    .filter(Boolean);
+
+  if (tokens.length === 0) {
+    throw new SubnetError('Enter at least one host requirement, for example 100, 50, 30 or LAN A 100.');
+  }
+
+  return tokens.map(parseTextRequirementToken);
+}
+
+export function expandVlsmRequirementRows(rows: VlsmRequirementInput[]): VlsmInput[] {
+  const expanded: VlsmInput[] = [];
+
+  rows.forEach((row, rowIndex) => {
+    const hosts = assertWholePositive(row.hosts, `Required hosts for ${row.name.trim() || `row ${rowIndex + 1}`}`);
+    const quantity = assertWholePositive(row.quantity, `Quantity for ${row.name.trim() || `row ${rowIndex + 1}`}`);
+    const baseName = row.name.trim();
+
+    for (let offset = 0; offset < quantity; offset += 1) {
+      expanded.push({
+        id: quantity === 1 ? row.id : `${row.id}-${offset + 1}`,
+        name: quantity === 1 || !baseName ? baseName : `${baseName} ${offset + 1}`,
+        hosts,
+      });
+    }
+  });
+
+  if (expanded.length === 0) {
+    throw new SubnetError('Add at least one subnet row before calculating VLSM.');
+  }
+
+  return expanded;
+}
+
+export function calculateVlsmAutoPlan(baseNetwork: string, rows: VlsmRequirementInput[]): VlsmPlan {
+  return calculateVlsmPlan(baseNetwork, expandVlsmRequirementRows(rows), 'optimized');
 }
 
 export function calculateAvailableSubnets(baseNetwork: string, targetCidrInput: number): AvailableSubnet[] {

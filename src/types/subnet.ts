@@ -18,6 +18,13 @@ export type VlsmInput = {
   hosts: number;
 };
 
+export type VlsmRequirementInput = {
+  id: string;
+  name: string;
+  hosts: number;
+  quantity: number;
+};
+
 export type VlsmOrder = 'original' | 'optimized' | 'random';
 
 export type VlsmAllocation = {
@@ -45,8 +52,16 @@ export type VlsmUnusedRange = {
 };
 
 export type VlsmPlan = {
+  baseNetwork: string;
+  baseCidr: number;
+  baseSubnetMask: string;
+  baseBroadcast: string;
+  baseTotalAddresses: number;
   allocations: VlsmAllocation[];
   unusedRanges: VlsmUnusedRange[];
+  totalRequiredHosts: number;
+  totalAllocatedAddresses: number;
+  efficiencyPercent: number;
 };
 
 export type AvailableSubnet = {

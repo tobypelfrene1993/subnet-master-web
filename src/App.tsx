@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Dashboard } from './pages/Dashboard';
 import { IpCalculator } from './pages/IpCalculator';
 import { VlsmCalculator } from './pages/VlsmCalculator';
+import { VlsmAutoPlanner } from './pages/VlsmAutoPlanner';
 import { AvailableSubnets } from './pages/AvailableSubnets';
 import { CidrWizard } from './pages/CidrWizard';
 import { PracticeMode } from './pages/PracticeMode';
@@ -16,7 +17,7 @@ import { TeacherExamGenerator } from './pages/TeacherExamGenerator';
 import type { VlsmAllocation } from './types/subnet';
 import type { LearningMode } from './lib/learning';
 
-export type PageKey = 'dashboard' | 'subnetWizard' | 'magic' | 'vlsmWhiteboard' | 'teacherExam' | 'ip' | 'binary' | 'vlsm' | 'available' | 'wizard' | 'practice' | 'exam' | 'cheat' | 'visual';
+export type PageKey = 'dashboard' | 'subnetWizard' | 'magic' | 'vlsmWhiteboard' | 'teacherExam' | 'ip' | 'binary' | 'vlsm' | 'vlsmAuto' | 'available' | 'wizard' | 'practice' | 'exam' | 'cheat' | 'visual';
 
 type NavItem = { key: PageKey; label: string; short: string };
 type NavSection = { title: string; items: NavItem[] };
@@ -31,6 +32,7 @@ const navSections: NavSection[] = [
     items: [
       { key: 'ip', label: 'Quick Calculator', short: 'QC' },
       { key: 'vlsm', label: 'VLSM Designer', short: 'VD' },
+      { key: 'vlsmAuto', label: 'VLSM Auto Planner', short: 'VA' },
       { key: 'available', label: 'Available Subnets', short: 'AS' },
       { key: 'wizard', label: 'Subnet Finder', short: 'SF' },
       { key: 'practice', label: 'Practice', short: 'PR' },
@@ -76,6 +78,8 @@ export default function App() {
         return <BinaryCalculator mode={learningMode} />;
       case 'vlsm':
         return <VlsmCalculator onResults={setVlsmResults} onOpenVisual={() => setActivePage('visual')} />;
+      case 'vlsmAuto':
+        return <VlsmAutoPlanner />;
       case 'available':
         return <AvailableSubnets />;
       case 'wizard':

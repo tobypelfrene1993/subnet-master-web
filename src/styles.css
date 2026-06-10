@@ -58,12 +58,14 @@ body::before {
 
 button,
 input,
-select {
+select,
+textarea {
   font: inherit;
 }
 
 input,
-select {
+select,
+textarea {
   width: 100%;
   border-radius: 1rem;
   border: 1px solid rgba(30, 54, 84, 0.95);
@@ -75,9 +77,15 @@ select {
 }
 
 input:focus,
-select:focus {
+select:focus,
+textarea:focus {
   border-color: rgba(39, 217, 255, 0.85);
   box-shadow: 0 0 0 3px rgba(39, 217, 255, 0.12);
+}
+
+textarea {
+  min-height: 8rem;
+  resize: vertical;
 }
 
 table {

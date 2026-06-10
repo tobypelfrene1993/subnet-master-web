@@ -29,6 +29,13 @@ const primaryTools: ToolCard[] = [
     code: 'VD',
   },
   {
+    title: 'VLSM Auto Planner',
+    page: 'vlsmAuto',
+    description: 'Automatically divide a network into multiple non-overlapping subnets.',
+    button: 'Auto plan',
+    code: 'VA',
+  },
+  {
     title: 'Available Subnets',
     page: 'available',
     description: 'List every target subnet block that fits inside a larger base network.',
@@ -102,7 +109,7 @@ export function Dashboard({ onNavigate }: DashboardProps) {
         </p>
       </section>
 
-      <section className="grid gap-4 lg:grid-cols-4">
+      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
         {primaryTools.map((tool) => <ToolCardButton key={tool.title} tool={tool} onNavigate={onNavigate} />)}
       </section>
 
